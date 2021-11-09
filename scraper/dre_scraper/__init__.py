@@ -1,1 +1,1 @@
-from .scraper import scrap_dre
+from dre_scraper.scraper import scrap
