@@ -16,7 +16,7 @@ class Session():
         self.page = page
 
     async def get(self, url):
-        await self.page.goto(url, options={"waitUntil": "networkidle2"})
+        await self.page.goto(url, options={"waitUntil": "networkidle0"})
         content = await self.page.content()
 
         return content

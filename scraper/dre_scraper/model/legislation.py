@@ -22,21 +22,18 @@ class Legislation(Scrapable):
         return list(books)
 
     async def scrap(self):
-        if self.verbose:
-            print("Getting legislation")
+        print("Getting legislation")
 
         html = await self.session.get(DRE_URL)
 
-        if self.verbose:
-            print("Parsing legislation")
+        print("Parsing legislation")
 
         books = self.__parse(html)
 
         for book in books:
             await book.scrap()
 
-        if self.verbose:
-            print("Parsed legislation")
+        print("Parsed legislation")
 
         self.books = books
 
