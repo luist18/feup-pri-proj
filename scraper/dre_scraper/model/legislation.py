@@ -5,12 +5,13 @@ from dre_scraper.model.scrapable import Scrapable
 
 
 class Legislation(Scrapable):
+    
     def __init__(self, session, verbose=False):
         self.session = session
         self.books = []
         self.verbose = verbose
 
-    def __parse(self, html):
+    def __parse(self, html=None):
         soup = BeautifulSoup(html, "html.parser")
 
         # Get the juridic legislation
@@ -30,7 +31,7 @@ class Legislation(Scrapable):
 
         books = self.__parse(html)
 
-        # tmp
+        # todo: tmp
         books = books[:1]
 
         for book in books:

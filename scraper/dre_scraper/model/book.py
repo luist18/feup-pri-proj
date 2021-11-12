@@ -1,10 +1,12 @@
 from bs4 import BeautifulSoup
 from dre_scraper.config.urls import BASE_URL_PREFIX
+from dre_scraper.model.section import Section
 from dre_scraper.model.book_entry import BookEntry, BookEntryType
 from dre_scraper.model.scrapable import Scrapable
 
 
 class Book(Scrapable):
+    
     def __init__(self, name, url, session):
         self.name = name
         self.url = url
@@ -12,8 +14,6 @@ class Book(Scrapable):
         self.root_section = None
 
     def __parse_row(self, row):
-        # type, name, url, depth
-
         # Parsing depth
         inner_div = row.select_one("td > div")
         margin_left = 0 if inner_div is None or inner_div['style'] is None else int(
@@ -37,7 +37,7 @@ class Book(Scrapable):
 
         return BookEntry(name, type, depth, url)
 
-    def __parse(self, html):
+    def __parse(self, html=None):
         soup = BeautifulSoup(html, "html.parser")
 
         rows_raw = soup.find_all("tr")
@@ -46,15 +46,24 @@ class Book(Scrapable):
             row.select("span")) > 0, rows_raw))
 
         entries = list(map(self.__parse_row, rows_raw))
+    
+        for entry in entries:
+            print(entry)
 
-        # parse entries into sections and articles
+        # First entry is always the root section
+        children = entries[1:]
+        
+        # Create the root section
+        root_section = Section(entries[0].name, children, entries[0].depth, self.session)
 
-        return None
+        return root_section
 
     async def scrap(self):
         html = await self.session.get(BASE_URL_PREFIX.format(self.url))
 
-        entries = self.__parse(html)
+        root_section = self.__parse(html)
+
+        await root_section.scrap()
 
     def __repr__(self):
-        return f"<Book {self.name}, {self.url}, {len(self.sections)} sections>"
+        return f"<Book {self.name}, {self.url}>"

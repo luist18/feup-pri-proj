@@ -1,6 +1,6 @@
 class Scrapable():
 
-    def __parse(self, html):
+    def __parse(self, html=None):
         """todo: documentation"""
         pass
 
