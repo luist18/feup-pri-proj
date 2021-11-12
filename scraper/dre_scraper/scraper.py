@@ -7,8 +7,9 @@ from dre_scraper.session import create_session
 async def __scrap_legislation():
     session = await create_session()
 
-    legislation = Legislation(session)
-    pass
+    legislation = Legislation(session, True)
+
+    await legislation.scrap()
 
 
 def scrap():
