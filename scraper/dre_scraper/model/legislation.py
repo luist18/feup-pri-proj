@@ -30,6 +30,9 @@ class Legislation(Scrapable):
 
         books = self.__parse(html)
 
+        # tmp
+        books = books[:1]
+
         for book in books:
             await book.scrap()
 
