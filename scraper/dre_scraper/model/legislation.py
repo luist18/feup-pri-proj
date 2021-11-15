@@ -5,7 +5,7 @@ from dre_scraper.model.scrapable import Scrapable
 
 
 class Legislation(Scrapable):
-    
+
     def __init__(self, session, verbose=False):
         self.session = session
         self.books = []
@@ -31,7 +31,7 @@ class Legislation(Scrapable):
 
         books = self.__parse(html)
 
-        # todo: tmp
+        # TODO: tmp
         books = books[:1]
 
         for book in books:

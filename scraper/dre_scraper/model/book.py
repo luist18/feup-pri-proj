@@ -6,7 +6,7 @@ from dre_scraper.model.scrapable import Scrapable
 
 
 class Book(Scrapable):
-    
+
     def __init__(self, name, url, session):
         self.name = name
         self.url = url
@@ -16,8 +16,8 @@ class Book(Scrapable):
     def __parse_row(self, row):
         # Parsing depth
         inner_div = row.select_one("td > div")
-        margin_left = 0 if inner_div is None or inner_div['style'] is None else int(
-            inner_div['style'].split(":")[1].split("px")[0])
+        margin_left = 0 if inner_div is None or inner_div["style"] is None else int(
+            inner_div["style"].split(":")[1].split("px")[0])
 
         # 20px per depth
         depth = margin_left // 20
@@ -46,15 +46,13 @@ class Book(Scrapable):
             row.select("span")) > 0, rows_raw))
 
         entries = list(map(self.__parse_row, rows_raw))
-    
-        for entry in entries:
-            print(entry)
 
         # First entry is always the root section
         children = entries[1:]
-        
+
         # Create the root section
-        root_section = Section(entries[0].name, children, entries[0].depth, self.session)
+        root_section = Section(
+            entries[0].name, children, entries[0].depth, self.session)
 
         return root_section
 
