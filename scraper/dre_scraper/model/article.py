@@ -6,10 +6,16 @@ from dre_scraper.model.scrapable import Scrapable
 
 class Article(Scrapable):
 
+    id = 1
+
     def __init__(self, title, url, session):
         self.title = title
         self.url = url
         self.session = session
+
+        # Set id and increment it
+        self.id = Article.id
+        Article.id += 1
 
     def __parse_versions(self, html):
         soup = BeautifulSoup(html, "html.parser")

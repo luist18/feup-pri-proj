@@ -5,13 +5,20 @@ from dre_scraper.model.scrapable import Scrapable
 
 class Section(Scrapable):
 
-    def __init__(self, name, entries, depth, session):
+    id = 1
+
+    def __init__(self, name, entries, depth, session, parent=None):
         self.name = name
         self.entries = entries
         self.depth = depth
         self.session = session
+        self.parent = parent
         self.sections = []
         self.articles = []
+
+        # Set id and increment it
+        self.id = Section.id
+        Section.id += 1
 
     def __parse(self, html=None):
         # Enumerate entries
@@ -27,7 +34,7 @@ class Section(Scrapable):
                 if entry.type == BookEntryType.SECTION:
                     # Create new section and append to the list
                     current_section = Section(
-                        entry.name, [], entry.depth, self.session)
+                        entry.name, [], entry.depth, self.session, self)
 
                     sections.append(current_section)
                 else:

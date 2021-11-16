@@ -7,11 +7,17 @@ from dre_scraper.model.scrapable import Scrapable
 
 class Book(Scrapable):
 
+    id = 1
+
     def __init__(self, name, url, session):
         self.name = name
         self.url = url
         self.session = session
         self.root_section = None
+
+        # Set id and increment it
+        self.id = Book.id
+        Book.id += 1
 
     def __parse_row(self, row):
         # Parsing depth
