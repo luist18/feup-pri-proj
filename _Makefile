@@ -1,0 +1,10 @@
+# THIS IS THE DELIVERABLE MAKEFILE
+
+#   runs the pipeline
+#   scraps the data from the website
+#	cleans the data
+#	loads the data into the database
+.PHONY: run
+run:
+	# TODO run scraper
+    python3 -m cleanup

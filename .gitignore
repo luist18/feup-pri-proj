@@ -1,4 +1,5 @@
-.pytest_cache/
+**/__pycache__/
 .tmp/
+.pytest_cache/
 /data/
 .env
