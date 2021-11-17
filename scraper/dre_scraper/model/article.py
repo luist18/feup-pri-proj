@@ -31,7 +31,7 @@ class Article(Scrapable):
             return versions
 
         initial_version_text = initial_version_div.select_one(
-            ".Fragmento_Texto > div > div").text
+            ".Fragmento_Texto > div > div").text.replace("\n", "\\n")
 
         initial_version = ArticleVersion(
             text=initial_version_text, initial=True)
@@ -44,10 +44,12 @@ class Article(Scrapable):
 
         for div in version_divs:
             # Get article text
-            text = div.select_one(".Fragmento_Texto > div > div").text
+            text = div.select_one(
+                ".Fragmento_Texto > div > div").text.replace("\n", "\\n")
 
             # Get article details
-            details = div.select_one(".ThemeGrid_Margin1First span").text
+            details = div.select_one(
+                ".ThemeGrid_Margin1First span").text.replace("\n", "\\n")
 
             # Create version
             version = ArticleVersion(text=text, details=details)
@@ -62,13 +64,20 @@ class Article(Scrapable):
 
         # Get the article header
         header = soup.select_one(
-            "#Modificado > div.ThemeGrid_Width10 > span").text
+            "#Modificado > div.ThemeGrid_Width10 > span").text.replace("\n", "\\n")
 
         # Get the article state
         state = soup.select_one("#ConsolidadoOrRevogado > span").text
 
         # Get the article text
-        text = soup.select_one("#b10-b2-b2-InjectHTMLWrapper").text
+        text_element = soup.select_one(
+            "#b10-b2-b2-InjectHTMLWrapper")
+
+        if text_element is None:
+            text_element = soup.select_one(
+                "#b10-b2-Texto")
+
+        text = text_element.text.replace("\n", "\\n")
 
         versions_count = len(soup.select(
             "div.list.list-group.OSFillParent > div"))
@@ -91,7 +100,7 @@ class Article(Scrapable):
 
         self.versions = versions
 
-        print(self)
+        print(f"<Article {self.title}>")
 
         if versions_count > 0 and len(self.versions) != versions_count + 1:
             print(

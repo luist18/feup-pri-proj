@@ -11,6 +11,10 @@ async def __scrap_legislation():
 
     await legislation.scrap()
 
+    return legislation
+
 
 def scrap():
-    asyncio.get_event_loop().run_until_complete(__scrap_legislation())
+    legislation = asyncio.get_event_loop().run_until_complete(__scrap_legislation())
+
+    return legislation

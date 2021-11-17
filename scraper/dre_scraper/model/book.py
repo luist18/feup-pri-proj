@@ -67,6 +67,8 @@ class Book(Scrapable):
 
         root_section = self.__parse(html)
 
+        self.root_section = root_section
+
         await root_section.scrap()
 
     def __repr__(self):

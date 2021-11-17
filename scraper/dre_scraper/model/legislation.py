@@ -31,11 +31,13 @@ class Legislation(Scrapable):
 
         books = self.__parse(html)
 
-        # TODO: tmp
-        books = books[:1]
+        tmp = 1
 
         for book in books:
+            print(f"Parsing {tmp}/{len(books)}")
             await book.scrap()
+            print(f"Parsed {tmp}/{len(books)} {book.name}")
+            tmp += 1
 
         print("Parsed legislation")
 

@@ -30,7 +30,7 @@ class Session():
 
         return content
 
-    async def get_and_click(self, url, selector, wait_until):
+    async def get_and_click(self, url, selector, wait_until=[], wait_for_function=[]):
         # Open a new page
         page = await self.browser.newPage()
 
@@ -45,12 +45,16 @@ class Session():
         wait_until = list(
             map(lambda selector: page.waitForSelector(selector), wait_until))
 
+        wait_for_function = list(
+            map(lambda func: page.waitForFunction(func), wait_for_function))
+
         # If element exists, click it
         if soup.select_one(selector) is not None:
             # Click the element
             await asyncio.gather(
                 page.click(selector),
                 *wait_until,
+                *wait_for_function
             )
 
         # Get the page content
