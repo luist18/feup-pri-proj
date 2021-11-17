@@ -15,7 +15,6 @@ def sections(path):
     Cleanup section.csv
     """
     df = pd.read_csv(path, index_col='id')
-    df['name'] = df['name'].apply(lambda str: '"{}"'.format(str.strip()))
     df.to_csv("data/cleanup/section.csv")
 
 
@@ -54,12 +53,19 @@ def articles(path):
     df['key'] = df.apply(lambda row: re.search(
         r' (\d+).º', row.title).group(1), axis=1)
     df['title'] = df.apply(lambda row: re.search(
-        r'\(.*\)', row.title).group().replace('(', '').replace(')', '').replace('"', ''), axis=1)
+        r'\(.*\)', row.title).group().replace('(', '').replace(')', ''), axis=1)
 
     # separate into points
     points = _create_points(df)
     points.to_csv("data/cleanup/article_point.csv")
     df.to_csv("data/cleanup/article.csv")
+
+
+def _get_date(details):
+    results = re.search(r'^.* (.+)$', details)
+    if not results:
+        return ''
+    return results.group(1)
 
 
 def article_versions(path):
@@ -69,5 +75,9 @@ def article_versions(path):
     df = pd.read_csv(path, index_col='id')
 
     points = _create_points(df)
-    
     points.to_csv("data/cleanup/article_version_point.csv")
+
+    df.details.fillna('', inplace=True)
+    df['date'] = df.apply(lambda row: _get_date(row.details), axis=1)
+
+    df.to_csv("data/cleanup/article_version.csv")
