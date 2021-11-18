@@ -6,5 +6,5 @@
 #	loads the data into the database
 .PHONY: run
 run:
-	# TODO run scraper
+	python3 -m dre_scraper
     python3 -m cleanup
