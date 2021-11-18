@@ -15,6 +15,7 @@ def sections(path):
     Cleanup section.csv
     """
     df = pd.read_csv(path, index_col='id')
+    df.name = df.name.str.strip()
     df.to_csv("data/cleanup/section.csv")
 
 
@@ -60,6 +61,8 @@ def articles(path):
         r' (\d+).º', row.title).group(1), axis=1)
     df['title'] = df.apply(lambda row: re.search(
         r'\(.*\)', row.title).group().replace('(', '').replace(')', ''), axis=1)
+
+    # TODO REVOGADO
 
     # separate into points
     points = _create_points(df)
