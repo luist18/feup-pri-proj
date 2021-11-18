@@ -24,7 +24,9 @@ def _create_points_text(text):
 
 
 def _create_points(articles):
-    df = pd.DataFrame(columns=['article_id', 'key', 'text'])
+    df = pd.DataFrame(columns=['id', 'article_id', 'key', 'text'])
+
+    id = 1
 
     for article_id, row in articles.iterrows():
         # sees if the text in the article has points
@@ -34,13 +36,17 @@ def _create_points(articles):
 
             for point in points:
                 df = df.append({
+                    'id': id,
                     'article_id': article_id,
                     'key': point[0],
                     'text': point[1]
                 }, ignore_index=True)
 
+                id += 1
             articles.at[article_id, 'text'] = re.sub(
                 '(\\n|\s)*(^|"|\\n)\d+(\.| -).*', '', row.text)
+
+    df = df.set_index('id')
 
     return df
 
