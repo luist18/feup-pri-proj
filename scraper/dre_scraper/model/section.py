@@ -42,7 +42,7 @@ class Section(Scrapable):
                     article = Article(entry.name, entry.url, self.session)
 
                     articles.append(article)
-            elif entry.depth >= self.depth:
+            elif entry.depth >= self.depth and current_section is not None:
                 # Entries inside a section
                 current_section.entries.append(entry)
 
@@ -61,7 +61,10 @@ class Section(Scrapable):
 
         # Scrap all articles
         for article in self.articles:
-            await article.scrap()
+            try:
+                await article.scrap()
+            except:
+                print(f"Error scraping article {article.title}")
 
     def __repr__(self):
         return f"<Section {self.name}, {len(self.sections)} sections, {len(self.articles)} articles>"

@@ -6,10 +6,9 @@ from dre_scraper.model.scrapable import Scrapable
 
 class Legislation(Scrapable):
 
-    def __init__(self, session, verbose=False):
+    def __init__(self, session):
         self.session = session
         self.books = []
-        self.verbose = verbose
 
     def __parse(self, html=None):
         soup = BeautifulSoup(html, "html.parser")
@@ -23,11 +22,7 @@ class Legislation(Scrapable):
         return list(books)
 
     async def scrap(self):
-        print("Getting legislation")
-
         html = await self.session.get(DRE_URL)
-
-        print("Parsing legislation")
 
         books = self.__parse(html)
 
@@ -38,8 +33,6 @@ class Legislation(Scrapable):
             await book.scrap()
             print(f"Parsed {tmp}/{len(books)} {book.name}")
             tmp += 1
-
-        print("Parsed legislation")
 
         self.books = books
 

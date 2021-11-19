@@ -13,6 +13,11 @@ class Article(Scrapable):
         self.url = url
         self.session = session
 
+        self.header = None
+        self.state = None
+        self.text = None
+        self.versions = []
+
         # Set id and increment it
         self.id = Article.id
         Article.id += 1
@@ -85,8 +90,14 @@ class Article(Scrapable):
         return (header, state, text, versions_count)
 
     async def scrap(self):
-        (html, versions_html) = await self.session.get_and_click(BASE_URL_PREFIX.format(self.url),
-                                                                 "#b10-b2-b4-Alteracoes_Titulo > a", ["#b10-b1-b3-b3-InjectHTMLWrapper", ".Fragmento_Texto"])
+        # TODO: fix this spaghetti code
+        versions_html = None
+
+        try:
+            (html, versions_html) = await self.session.get_and_click(BASE_URL_PREFIX.format(self.url),
+                                                                     "#b10-b2-b4-Alteracoes_Titulo > a", ["#b10-b1-b3-b3-InjectHTMLWrapper", ".Fragmento_Texto"])
+        except:
+            html = await self.session.get(BASE_URL_PREFIX.format(self.url))
 
         # Parse header, state and text
         header, state, text, versions_count = self.__parse(html)
@@ -96,15 +107,14 @@ class Article(Scrapable):
         self.text = text
 
         # Parse versions
-        versions = self.__parse_versions(versions_html)
+        if versions_html is None:
+            versions = []
+        else:
+            versions = self.__parse_versions(versions_html)
 
         self.versions = versions
 
-        print(f"<Article {self.title}>")
-
-        if versions_count > 0 and len(self.versions) != versions_count + 1:
-            print(
-                f"Error in article ({len(self.versions)}/{versions_count + 1})", self)
+        print(self)
 
     def __repr__(self):
         return f"<Article {self.title}, {self.header}, {self.state}, {len(self.versions)} versions>"

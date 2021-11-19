@@ -43,10 +43,10 @@ class Session():
         soup = BeautifulSoup(content, "html.parser")
 
         wait_until = list(
-            map(lambda selector: page.waitForSelector(selector), wait_until))
+            map(lambda selector: page.waitForSelector(selector, options={"timeout": 3000}), wait_until))
 
         wait_for_function = list(
-            map(lambda func: page.waitForFunction(func), wait_for_function))
+            map(lambda func: page.waitForFunction(func, options={"timeout": 3000}), wait_for_function))
 
         # If element exists, click it
         if soup.select_one(selector) is not None:
