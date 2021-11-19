@@ -1,0 +1,3 @@
+pyppeteer
+pytest
+beautifulsoup4
