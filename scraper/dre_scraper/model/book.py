@@ -58,7 +58,7 @@ class Book(Scrapable):
 
         # Create the root section
         root_section = Section(
-            entries[0].name, children, entries[0].depth, self.session)
+            entries[0].name, children, 0, self.session)
 
         return root_section
 

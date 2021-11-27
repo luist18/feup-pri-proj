@@ -55,16 +55,16 @@ class Section(Scrapable):
         self.sections = sections
         self.articles = articles
 
-        # Scrap all sections
-        for section in self.sections:
-            await section.scrap()
-
         # Scrap all articles
         for article in self.articles:
             try:
                 await article.scrap()
-            except:
+            except Exception as e:
                 print(f"Error scraping article {article.title}")
+
+        # Scrap all sections
+        for section in self.sections:
+            await section.scrap()
 
     def __repr__(self):
         return f"<Section {self.name}, {len(self.sections)} sections, {len(self.articles)} articles>"
