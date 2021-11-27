@@ -6,5 +6,12 @@
 #	loads the data into the database
 .PHONY: run
 run:
-	python3 -m dre_scraper
+    echo "Running pipeline"
+    # scraping
+    echo "Scraping data from website"
+    cd scraper
+    python3 -m dre_scraper
+    cd ..
+    # cleaning
+    echo "Cleaning data"
     python3 -m cleanup
