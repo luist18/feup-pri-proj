@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
+
 import pandas as pd
+import numpy as np
+import math
 import re
 
 
@@ -16,12 +20,52 @@ def sections(path):
     """
     df = pd.read_csv(path, index_col='id')
     df.name = df.name.str.strip()
+    df.parent_id = df.parent_id.fillna(-1) # root section has parent -1
+    df.parent_id = df.parent_id.astype(int)
     df.to_csv("data/cleanup/section.csv")
 
 
-def _create_points_text(text):
-    return re.findall(
-        r'(?:^|"|\\n)(\d+)(?:\.| -) (.+?)(?=\s*(?:\\n(?:\\n|\d+)|"|$))', text)
+def articles(path):
+    """
+    Cleanup article.csv
+    """
+    df = pd.read_csv(path, index_col='id')
+
+    groups = df['title'].str.extract(r'Artigo\s+(?P<key>\d+)\.º(?:\s+|-(?P<extra>\w)\s+)\(?(?P<title>.*?)\)?$', expand=True)
+    groups['key'] = np.where(groups.extra.notna(), groups.key + " " + groups.extra, groups.key)
+    groups = groups.drop(['extra'], axis=1)
+
+    df = df.drop(['title'], axis=1)
+    df = df.join(groups)
+
+    # TODO REVOGADO
+
+    # separate into points
+    points = _create_points(df)
+    points.to_csv("data/cleanup/article_point.csv")
+    df.to_csv("data/cleanup/article.csv")
+
+
+def article_versions(path):
+    """
+    Cleanup article_version.csv
+    """
+    df = pd.read_csv(path, index_col='id')
+
+    points = _create_points(df)
+    points.to_csv("data/cleanup/article_version_point.csv")
+
+    df.details.fillna('', inplace=True)
+    df['date'] = df.apply(lambda row: _get_date(row.details), axis=1)
+
+    df.to_csv("data/cleanup/article_version.csv")
+
+
+def _get_date(details):
+    results = re.search(r'^.* (.+)$', details)
+    if not results:
+        return ''
+    return results.group(1)
 
 
 def _create_points(articles):
@@ -31,7 +75,7 @@ def _create_points(articles):
 
     for article_id, row in articles.iterrows():
         # sees if the text in the article has points
-        if re.search(r'1\.', row.text):
+        if not isinstance(row.text, float) and re.search(r'1\.', row.text): # TODO is instance temporary (nan)
             # if it has points, split it into points
             points = _create_points_text(row.text)
 
@@ -52,41 +96,6 @@ def _create_points(articles):
     return df
 
 
-def articles(path):
-    """
-    Cleanup article.csv
-    """
-    df = pd.read_csv(path, index_col='id')
-    df['key'] = df.apply(lambda row: re.search(
-        r' (\d+).º', row.title).group(1), axis=1)
-    df['title'] = df.apply(lambda row: re.search(
-        r'\(.*\)', row.title).group().replace('(', '').replace(')', ''), axis=1)
-
-    # TODO REVOGADO
-
-    # separate into points
-    points = _create_points(df)
-    points.to_csv("data/cleanup/article_point.csv")
-    df.to_csv("data/cleanup/article.csv")
-
-
-def _get_date(details):
-    results = re.search(r'^.* (.+)$', details)
-    if not results:
-        return ''
-    return results.group(1)
-
-
-def article_versions(path):
-    """
-    Cleanup article_version.csv
-    """
-    df = pd.read_csv(path, index_col='id')
-
-    points = _create_points(df)
-    points.to_csv("data/cleanup/article_version_point.csv")
-
-    df.details.fillna('', inplace=True)
-    df['date'] = df.apply(lambda row: _get_date(row.details), axis=1)
-
-    df.to_csv("data/cleanup/article_version.csv")
+def _create_points_text(text):
+    return re.findall(
+        r'(?:^|"|\\n)(\d+)(?:\.| -) (.+?)(?=\s*(?:\\n(?:\\n|\d+)|"|$))', text)
