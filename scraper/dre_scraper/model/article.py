@@ -72,7 +72,10 @@ class Article(Scrapable):
             "#Modificado > div.ThemeGrid_Width10 > span").text.replace("\n", "\\n")
 
         # Get the article state
-        state = soup.select_one("#ConsolidadoOrRevogado > span").text
+        try:
+            state = soup.select_one("#ConsolidadoOrRevogado > span").text
+        except:
+            state = None
 
         # Get the article text
         text_element = soup.select_one(
