@@ -58,6 +58,7 @@ def articles(articles_path, article_versions_path):
     print("Appending versions...")
     # appends the versions
     article_versions = pd.read_csv(article_versions_path, index_col='id')
+    article_versions = article_versions.drop_duplicates(subset=['article_id', 'text'], keep='last')
     articles = _join_article_versions(articles, article_versions)
 
     print("Creating dates...")
@@ -139,14 +140,12 @@ def _create_article_versions(articles):
 
 def _join_article_versions(articles, article_versions):
     res = articles.copy()
+    res['article_id'] = res.index
 
     # appends the versions to the original dataframe
     # ignore_index so that the indexes of the new (old) articles' index comes after the original ones
-    res = res.append(article_versions, ignore_index=True)
-    # with ignore_index, indexes start at 0
-    # however our indexes start at 1, so we need to add 1 to the indexes
-    res.index += 1
-    res['id'] = res.index  # creates a new id column
+    article_versions.index += res.index.max() + 1
+    res = res.append(article_versions)
 
     # creates the current table
     # this one is False for all old articles and True for the current one (one per article_id)
@@ -154,22 +153,18 @@ def _join_article_versions(articles, article_versions):
 
     # updates section_id, header, key, and title according to article_id
     # also updates the state to 'Alterado'
+    res['id'] = res.index
     res = res.apply(lambda row: _update_article_id(row, res), axis=1)
 
     # removes the original articles that originally appeared in the versions
     # if the article_id is the same, it means that the article_id and the text are the same
     # if they are the same, given the parse in the last operation, the one with more information is the article_version
     #     this is, the 'last'
-    res = res.drop_duplicates(
-        subset=['text', 'article_id'], keep='last', ignore_index=True)
+    global remove
+    res = res[~res.id.isin(remove)]
 
     # in order to restore the original order, we need to sort by article_id
     res = res.sort_values(by=['article_id'], ignore_index=True)
-
-    # fixes NaNs
-    # initial: if initial is NaN, then it didn't came from article_version. so, there are not previous versions from it
-    #    so, it is the initial article
-    res.initial = res.initial.fillna(True)
 
     # fixes wrong types
     # section_id and article_id should be ints instead of floats
@@ -182,15 +177,17 @@ def _join_article_versions(articles, article_versions):
 
     return res
 
+global remove
+remove = []
 
 def _update_article_id(row, articles):
     # if that's an original article then it does not need to do this operation
-    if str(row.article_id) == 'nan':
-        row.article_id = row.id
+    if str(row.initial) == 'nan':
+        row.initial = True
         row.current = True
         return row
 
-    original = articles.iloc[int(row.article_id) - 1]
+    original = articles[articles.index == row.article_id].iloc[0]
 
     # updates section_id, header, key, and title according to article_id
     row.section_id = original.section_id
@@ -199,9 +196,13 @@ def _update_article_id(row, articles):
     row.title = original.title
 
     # the state of old articles is 'Alterado'
+
     if row.text == original.text:
         row.state = original.state
         row.current = True
+
+        global remove
+        remove.append(original.id)
     else:
         row.state = 'Alterado'
         row.current = False
