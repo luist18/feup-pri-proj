@@ -1,3 +1,5 @@
+import logging
+
 from bs4 import BeautifulSoup
 from dre_scraper.config.urls import BASE_URL_PREFIX
 from dre_scraper.model.article_version import ArticleVersion
@@ -38,8 +40,11 @@ class Article(Scrapable):
         initial_version_text = initial_version_div.select_one(
             ".Fragmento_Texto > div > div").text.replace("\n", "\\n")
 
+        initial_version_title = initial_version_div.select_one(
+            ".Fragmento_Epigrafe > div > div").text.replace("\n", "\\n")
+
         initial_version = ArticleVersion(
-            text=initial_version_text, initial=True)
+            title=initial_version_title, text=initial_version_text, initial=True)
 
         # Add initial version to the versions array
         versions.append(initial_version)
@@ -56,8 +61,12 @@ class Article(Scrapable):
             details = div.select_one(
                 ".ThemeGrid_Margin1First span").text.replace("\n", "\\n")
 
+            # Get article details
+            title = div.select_one(
+                ".Fragmento_Epigrafe span").text.replace("\n", "\\n")
+
             # Create version
-            version = ArticleVersion(text=text, details=details)
+            version = ArticleVersion(title=title, text=text, details=details)
 
             # Add version to the versions array
             versions.append(version)
@@ -115,9 +124,11 @@ class Article(Scrapable):
         else:
             versions = self.__parse_versions(versions_html)
 
-        self.versions = versions
+        if versions_count != 0 and versions_count + 1 != len(versions):
+            logging.warning(
+                f"Article {self.title} has {versions_count + 1} versions but {len(versions)} were parsed")
 
-        print(self)
+        self.versions = versions
 
     def __repr__(self):
         return f"<Article {self.title}, {self.header}, {self.state}, {len(self.versions)} versions>"

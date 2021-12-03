@@ -2,7 +2,8 @@ class ArticleVersion():
 
     id = 1
 
-    def __init__(self, text, details=None, initial=False):
+    def __init__(self, title, text, details=None, initial=False):
+        self.title = title
         self.text = text
         self.details = details
         self.initial = initial
@@ -12,4 +13,4 @@ class ArticleVersion():
         ArticleVersion.id += 1
 
     def __repr__(self):
-        return f"<Change {self.details}, {self.initial}, {self.text}>"
+        return f"<Change {self.title} {self.details}, {self.initial}, {self.text}>"

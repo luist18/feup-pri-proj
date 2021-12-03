@@ -1,3 +1,4 @@
+import logging
 from dre_scraper.model.article import Article
 from dre_scraper.model.book_entry import BookEntryType
 from dre_scraper.model.scrapable import Scrapable
@@ -60,7 +61,7 @@ class Section(Scrapable):
             try:
                 await article.scrap()
             except Exception as e:
-                print(f"Error scraping article {article.title}")
+                logging.error(f"Error scraping article {article.title}")
 
         # Scrap all sections
         for section in self.sections:
