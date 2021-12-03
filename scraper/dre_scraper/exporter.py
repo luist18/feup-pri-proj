@@ -12,24 +12,24 @@ def export_to_csv(legislation):
     # article.csv - id, section, title, header, state, text
     # article_version.csv - id, article_id, text, details (can be None), initial
 
-    books_file = open("data/book.csv", "w", newline="", encoding="utf-8")
+    books_file = open("./book.csv", "w", newline="", encoding="utf-8")
     books_writer = csv.writer(books_file)
     books_writer.writerow(["id", "name", "url", "root_section_id"])
 
-    sections_file = open("data/section.csv", "w", newline="", encoding="utf-8")
+    sections_file = open("./section.csv", "w", newline="", encoding="utf-8")
     sections_writer = csv.writer(sections_file)
     sections_writer.writerow(["id", "name", "depth", "parent_id"])
 
-    articles_file = open("data/article.csv", "w", newline="", encoding="utf-8")
+    articles_file = open("./article.csv", "w", newline="", encoding="utf-8")
     articles_writer = csv.writer(articles_file)
     articles_writer.writerow(
         ["id", "section_id", "title", "header", "state", "text"])
 
     articles_versions_file = open(
-        "data/article_version.csv", "w", newline="", encoding="utf-8")
+        "./article_version.csv", "w", newline="", encoding="utf-8")
     articles_versions_writer = csv.writer(articles_versions_file)
     articles_versions_writer.writerow(
-        ["id", "article_id", "text", "details", "initial"])
+        ["id", "article_id", "title", "text", "details", "initial"])
 
     for book in legislation.books:
         books_writer.writerow(
@@ -62,4 +62,4 @@ def __export_sections_to_csv(current_section, sections_writer, articles_writer, 
 
         for version in article.versions:
             articles_versions_writer.writerow(
-                [version.id, article.id, version.text, version.details, version.initial])
+                [version.id, article.id, version.title, version.text, version.details, version.initial])

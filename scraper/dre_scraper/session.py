@@ -39,31 +39,37 @@ class Session():
         # Get the page content
         content = await page.content()
 
-        # Check if the selector exists
-        soup = BeautifulSoup(content, "html.parser")
-
-        wait_until = list(
-            map(lambda selector: page.waitForSelector(selector, options={"timeout": 3000}), wait_until))
-
-        wait_for_function = list(
-            map(lambda func: page.waitForFunction(func, options={"timeout": 3000}), wait_for_function))
-
         # If element exists, click it
-        if soup.select_one(selector) is not None:
-            # Click the element
-            await asyncio.gather(
-                page.click(selector),
-                *wait_until,
-                *wait_for_function
-            )
+        try:
+            # Check if the selector exists
+            soup = BeautifulSoup(content, "html.parser")
 
-        # Get the page content
-        content_after_click = await page.content()
+            wait_until = list(
+                map(lambda selector: page.waitForSelector(selector, options={"timeout": 3000}), wait_until))
 
-        # Close the page
-        await page.close()
+            wait_for_function = list(
+                map(lambda func: page.waitForFunction(func, options={"timeout": 3000}), wait_for_function))
 
-        return (content, content_after_click)
+            if soup.select_one(selector) is not None:
+                # Click the element
+                await asyncio.gather(
+                    page.click(selector),
+                    *wait_until,
+                    *wait_for_function
+                )
+
+            # Get the page content
+            content_after_click = await page.content()
+
+            # Close the page
+            await page.close()
+
+            return (content, content_after_click)
+        except Exception as e:
+            # Close the page
+            await page.close()
+
+            return (content, None)
 
     async def close(self):
         await self.browser.close()

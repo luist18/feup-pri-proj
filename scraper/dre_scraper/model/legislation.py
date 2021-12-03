@@ -1,3 +1,5 @@
+import logging
+import datetime
 from bs4 import BeautifulSoup
 from dre_scraper.config.urls import DRE_URL
 from dre_scraper.model.book import Book
@@ -9,6 +11,20 @@ class Legislation(Scrapable):
     def __init__(self, session):
         self.session = session
         self.books = []
+
+        self.__config_logger()
+
+    def __config_logger(self):
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s [%(levelname)s] %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+            handlers=[
+                logging.FileHandler(
+                    "run-{}.log".format(datetime.datetime.now()).replace(":", ".")),
+                logging.StreamHandler()
+            ]
+        )
 
     def __parse(self, html=None):
         soup = BeautifulSoup(html, "html.parser")
@@ -29,9 +45,9 @@ class Legislation(Scrapable):
         tmp = 1
 
         for book in books:
-            print(f"Parsing {tmp}/{len(books)}")
+            logging.info(f"Parsing {tmp}/{len(books)}")
             await book.scrap()
-            print(f"Parsed {tmp}/{len(books)} {book.name}")
+            logging.info(f"Parsed {tmp}/{len(books)} {book.name}")
             tmp += 1
 
         self.books = books
