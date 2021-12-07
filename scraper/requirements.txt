@@ -1,3 +1,4 @@
 pyppeteer
+selenium
 pytest
 beautifulsoup4

@@ -1,7 +1,7 @@
 import asyncio
 
 from dre_scraper.model.legislation import Legislation
-from dre_scraper.session import create_session
+from dre_scraper.session import create_selenium_session as create_session
 
 
 async def __scrap_legislation():
