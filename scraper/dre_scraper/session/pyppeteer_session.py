@@ -5,7 +5,7 @@ from pyppeteer import launch
 
 
 async def create_session():
-    browser = await launch(headless=True)
+    browser = await launch(headless=True, args=["--no-sandbox"])
 
     session = Session(browser)
 

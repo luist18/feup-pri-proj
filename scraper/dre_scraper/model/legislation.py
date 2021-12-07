@@ -26,6 +26,8 @@ class Legislation(Scrapable):
             ]
         )
 
+        logging.getLogger().propagate = False
+
     def __parse(self, html=None):
         soup = BeautifulSoup(html, "html.parser")
 
