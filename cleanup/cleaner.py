@@ -78,6 +78,12 @@ def articles(articles_path, article_versions_path):
     # separates into points
     points = _create_points(articles)
 
+    # cleans the \n
+    articles.text = articles.text.str.strip()
+    articles.text = articles.text.str.replace(r'\\n$', '')
+    points.text = points.text.str.strip()
+    points.text = points.text.str.replace(r'\\n$', '')
+
     print("Saving...")
     # saves all new dataframes
     points.to_csv("data/cleanup/article_point.csv")
@@ -92,6 +98,11 @@ def _get_date(row):
         # gets the date from the end of the details
         # yyyy-mm-dd
         results = re.search(r'^.* (\d\d\d\d-\d\d-\d\d)$', row.details)
+        row.date = results.group(1)
+    elif str(row.header) != 'nan':
+        # gets the date from the end of the header
+        # yyyy-mm-dd
+        results = re.search(r'^.* (\d\d\d\d-\d\d-\d\d)$', row.header)
         row.date = results.group(1)
 
     return row
