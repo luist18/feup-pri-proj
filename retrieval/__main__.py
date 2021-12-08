@@ -1,5 +1,6 @@
-import pandas as pd
+from datetime import datetime
 
+import pandas as pd
 
 articles_read = 0
 points_read = 0
@@ -23,9 +24,11 @@ def main():
     article_final = article_final.drop(['id'], axis=1)
 
     with open('data/retrieval/article.json', 'w', encoding='utf-8') as file:
-        article_final.to_json(file, orient='records', force_ascii=False)
+        article_final.to_json(file, orient='records',
+                              force_ascii=False, indent=4)
     with open('data/retrieval/article_point.json', 'w', encoding='utf-8') as file:
-        article_point_final.to_json(file, orient='records', force_ascii=False)
+        article_point_final.to_json(
+            file, orient='records', force_ascii=False, indent=4)
 
 
 def create_article_documents(article, book, section):
@@ -95,7 +98,7 @@ def _update_point(row, articles, article_point):
     points_read = points_read + 1
     if points_read % 100 == 0:
         print(f'\r{round(points_read / len(article_point) * 100, 2)}%', end='')
-    
+
     article = articles[articles.id == row['article_id']].iloc[0]
 
     row['article_state'] = article['state']

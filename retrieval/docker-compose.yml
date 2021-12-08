@@ -1,0 +1,23 @@
+version: "3.6"
+
+services:
+  #solr1_schemaless:
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile
+  #  ports:
+  #    - "5001:8983"
+  solr2_schema:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - SCHEMA_TYPE=SCHEMA
+    ports:
+      - "5002:8983"
+  #solr3_schema_weights:
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile
+  #  ports:
+  #    - "5003:8983"

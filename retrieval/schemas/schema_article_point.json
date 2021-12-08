@@ -1,0 +1,59 @@
+{
+  "add-field": [
+    {
+      "name": "key",
+      "type": "pint",
+      "stored": true,
+      "indexed": true,
+      "required": true
+    },
+    {
+      "name": "text",
+      "type": "text_general",
+      "stored": true,
+      "indexed": true,
+      "required": true
+    },
+    {
+      "name": "article_state",
+      "type": "text_general",
+      "stored": true
+    },
+    {
+      "name": "article_key",
+      "type": "text_general",
+      "stored": true,
+      "indexed": true,
+      "required": true
+    },
+    {
+      "name": "article_title",
+      "type": "text_general",
+      "stored": true,
+      "indexed": true
+    },
+    {
+      "name": "article_date",
+      "type": "pdate",
+      "stored": true,
+      "indexed": true,
+      "required": true,
+      "docValues": true
+    },
+    {
+      "name": "article_path",
+      "type": "text_general",
+      "stored": true,
+      "indexed": true,
+      "required": true,
+      "multiValued": true
+    },
+    {
+      "name": "article_book",
+      "type": "text_general",
+      "stored": true,
+      "indexed": true,
+      "required": true
+    }
+  ]
+}
