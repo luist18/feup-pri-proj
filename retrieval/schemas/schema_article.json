@@ -8,12 +8,13 @@
 					"class": "solr.ClassicTokenizerFactory"
 				},
 				"filters": [
+					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
 					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
 					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" },
 					{ "class": "solr.ClassicFilterFactory" },
-					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
-					{ "class": "solr.PortugueseStemFilterFactory" },
-					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" }
+					{ "class": "solr.NGramFilterFactory", "preserveOriginal": "true", "minGramSize": "5", "maxGramSize": "46" },
+					{ "class": "solr.PortugueseStemFilterFactory" }
 				]
 			},
 			"queryAnalyzer": {
@@ -21,12 +22,12 @@
 					"class": "solr.ClassicTokenizerFactory"
 				},
 				"filters": [
+					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
 					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
 					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" },
 					{ "class": "solr.ClassicFilterFactory" },
-					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
-					{ "class": "solr.PortugueseStemFilterFactory" },
-					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" }
+					{ "class": "solr.PortugueseStemFilterFactory" }
 				]
 			}
 		},
