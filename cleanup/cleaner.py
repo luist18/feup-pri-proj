@@ -58,7 +58,10 @@ def articles(articles_path, article_versions_path):
     print("Appending versions...")
     # appends the versions
     article_versions = pd.read_csv(article_versions_path, index_col='id')
-    article_versions = article_versions.drop_duplicates(subset=['article_id', 'text'], keep='last')
+    article_versions['title'] = article_versions['title'].apply(
+        lambda title: re.search(r'^\(?(.+?)\)?(?:\\n)?$', title).group(1))
+    article_versions = article_versions.drop_duplicates(
+        subset=['article_id', 'text', 'title'], keep='last')
     articles = _join_article_versions(articles, article_versions)
 
     print("Creating dates...")
@@ -188,8 +191,10 @@ def _join_article_versions(articles, article_versions):
 
     return res
 
+
 global remove
 remove = []
+
 
 def _update_article_id(row, articles):
     # if that's an original article then it does not need to do this operation
@@ -200,15 +205,14 @@ def _update_article_id(row, articles):
 
     original = articles[articles.index == row.article_id].iloc[0]
 
-    # updates section_id, header, key, and title according to article_id
+    # updates section_id, header, and key according to article_id
     row.section_id = original.section_id
     row.header = original.header
     row.key = original.key
-    row.title = original.title
 
     # the state of old articles is 'Alterado'
 
-    if row.text == original.text:
+    if row.text == original.text and row.title == original.title:
         row.state = original.state
         row.current = True
 
