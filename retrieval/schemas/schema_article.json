@@ -1,62 +1,139 @@
 {
-  "add-field": [
-    {
-      "name": "state",
-      "type": "text_general",
-      "stored": true
-    },
-    {
-      "name": "text",
-      "type": "text_general",
-      "stored": true,
-      "indexed": true
-    },
-    {
-      "name": "key",
-      "type": "text_general",
-      "stored": true,
-      "indexed": true,
-      "required": true
-    },
-    {
-      "name": "title",
-      "type": "text_general",
-      "stored": true,
-      "indexed": true
-    },
-    {
-      "name": "details",
-      "type": "text_general",
-      "stored": true
-    },
-    {
-      "name": "date",
-      "type": "pdate",
-      "stored": true,
-      "indexed": true,
-      "required": true,
-      "docValues": true
-    },
-    {
-      "name": "path",
-      "type": "text_general",
-      "stored": true,
-      "indexed": true,
-      "required": true,
-      "multiValued": true
-    },
-    {
-      "name": "book",
-      "type": "text_general",
-      "stored": true,
-      "indexed": true,
-      "required": true
-    },
-    {
-      "name": "book_url",
-      "type": "text_general",
-      "stored": true,
-      "required": true
-    }
-  ]
+	"add-field-type": [
+		{
+			"name": "text_type",
+			"class": "solr.TextField",
+			"indexAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
+					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.ClassicFilterFactory" },
+					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
+					{ "class": "solr.PortugueseStemFilterFactory" },
+					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" }
+				]
+			},
+			"queryAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
+					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.ClassicFilterFactory" },
+					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
+					{ "class": "solr.PortugueseStemFilterFactory" },
+					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" }
+				]
+			}
+		},
+		{
+			"name": "key_type",
+			"class": "solr.TextField",
+			"indexAnalyzer": {
+				"tokenizer": {
+					"class": "solr.PathHierarchyTokenizerFactory",
+					"delimiter": "-"
+				},
+				"filters": [{ "class": "solr.LowerCaseFilterFactory" }]
+			},
+			"queryAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [{ "class": "solr.LowerCaseFilterFactory" }]
+			}
+		},
+		{
+			"name": "title_type",
+			"class": "solr.TextField",
+			"indexAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
+					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.ClassicFilterFactory" },
+					{ "class": "solr.PortugueseStemFilterFactory" },
+					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" }
+				]
+			},
+			"queryAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
+					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.ClassicFilterFactory" },
+					{ "class": "solr.PortugueseStemFilterFactory" },
+					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" }
+				]
+			}
+		}
+	],
+	"add-field": [
+		{
+			"name": "state",
+			"type": "text_general",
+			"stored": true
+		},
+		{
+			"name": "text",
+			"type": "text_type",
+			"stored": true,
+			"indexed": true
+		},
+		{
+			"name": "key",
+			"type": "key_type",
+			"stored": true,
+			"indexed": true,
+			"required": true
+		},
+		{
+			"name": "title",
+			"type": "title_type",
+			"stored": true,
+			"indexed": true
+		},
+		{
+			"name": "details",
+			"type": "text_general",
+			"stored": true
+		},
+		{
+			"name": "date",
+			"type": "pdate",
+			"stored": true,
+			"indexed": true,
+			"required": true,
+			"docValues": true
+		},
+		{
+			"name": "path",
+			"type": "title_type",
+			"stored": true,
+			"indexed": true,
+			"required": true,
+			"multiValued": true
+		},
+		{
+			"name": "book",
+			"type": "title_type",
+			"stored": true,
+			"indexed": true,
+			"required": true
+		},
+		{
+			"name": "book_url",
+			"type": "text_general",
+			"stored": true,
+			"required": true
+		}
+	]
 }
