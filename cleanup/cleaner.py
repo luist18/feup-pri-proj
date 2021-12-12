@@ -74,19 +74,13 @@ def articles(articles_path, article_versions_path):
     articles.index.name = 'id'
     articles = articles.drop(['id'], axis=1)
 
-    print("Creating points...")
-    # separates into points
-    points = _create_points(articles)
 
     # cleans the \n
     articles.text = articles.text.str.strip()
     articles.text = articles.text.str.replace(r'\\n$', '')
-    points.text = points.text.str.strip()
-    points.text = points.text.str.replace(r'\\n$', '')
 
     print("Saving...")
     # saves all new dataframes
-    points.to_csv("data/cleanup/article_point.csv")
     articles.to_csv("data/cleanup/article.csv")
     article_versions.to_csv("data/cleanup/article_version.csv", index=False)
 
@@ -219,39 +213,3 @@ def _update_article_id(row, articles):
         row.current = False
 
     return row
-
-
-def _create_points(articles):
-    df = pd.DataFrame(columns=['id', 'article_id', 'key', 'text'])
-
-    id = 1
-
-    # TODO cleanup revogado points
-
-    for article_id, row in articles.iterrows():
-        # sees if the text in the article has points
-        # TODO is instance temporary (nan)
-        if not isinstance(row.text, float) and re.search(r'1\.', row.text):
-            # if it has points, split it into points
-            points = _create_points_text(row.text)
-
-            for point in points:
-                df = df.append({
-                    'id': id,
-                    'article_id': article_id,
-                    'key': point[0],
-                    'text': point[1]
-                }, ignore_index=True)
-
-                id += 1
-            articles.at[article_id, 'text'] = re.sub(
-                '(\\n|\s)*(^|"|\\n)\d+(\.| -).*', '', row.text)
-
-    df = df.set_index('id')
-
-    return df
-
-
-def _create_points_text(text):
-    return re.findall(
-        r'(?:^|"|\\n)(\d+)(?:\.| -) (.+?)(?=\s*(?:\\n(?:\\n|\d+)|"|$))', text)
