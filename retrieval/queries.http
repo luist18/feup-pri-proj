@@ -1,0 +1,79 @@
+@hostname = localhost
+@port = 5002
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+@core = articles
+
+###
+
+# Search by articles containing "horas"
+http://{{host}}/solr/{{core}}/select
+content-type: {{contentType}}
+
+{
+    "params": {
+        "defType": "edismax",
+        "qf": "title^2 text^1 path^0.5 book^0.25",
+        "bq": "state:Consolidado^4"
+    }
+    "query": "horas",
+}
+
+###
+
+# Search by articles containing "horas" in book "Código do Trabalho"
+http://{{host}}/solr/{{core}}/select
+content-type: {{contentType}}
+
+{
+    "params": {
+        "defType": "edismax",
+        "qf": "title^2 text^1 path^0.5",
+        "bq": "state:Consolidado^4"
+    },
+    "query": "+horas +book:\"Código do Trabalho\"",
+}
+
+###
+
+# Search from the initial Constituição text (1976)
+http://{{host}}/solr/{{core}}/select
+content-type: {{contentType}}
+
+{
+    "params": {
+        "defType": "edismax",
+        "bq": "state:Consolidado^4",
+    }
+    "query": "+date:[1976-01-01T00:00:00Z TO 1976-12-31T23:59:59Z] +book:Constituição",
+}
+
+###
+
+# Search articles by a title containing "trabalhador"
+http://{{host}}/solr/{{core}}/select
+content-type: {{contentType}}
+
+{
+    "params": {
+        "defType": "edismax",
+        "bq": "state:Consolidado^4",
+        "qf": "title",
+    }
+    "query": "trabalhador",
+}
+
+###
+
+# Same as above but not in book "Código do Trabalho"
+http://{{host}}/solr/{{core}}/select
+content-type: {{contentType}}
+
+{
+    "params": {
+        "defType": "edismax",
+        "bq": "state:Consolidado^4",
+        "qf": "title",
+    }
+    "query": "trabalhador -book:\"Código do Trabalho\"",
+}
