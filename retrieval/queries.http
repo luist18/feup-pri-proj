@@ -77,3 +77,65 @@ content-type: {{contentType}}
     }
     "query": "trabalhador -book:\"Código do Trabalho\"",
 }
+
+###
+
+# Search the status of articles that contain "socialismo" or "classes" and check its status
+http://{{host}}/solr/{{core}}/select
+content-type: {{contentType}}
+
+{
+    "params": {
+        "defType": "edismax",
+        "bq": "state:Consolidado^4",
+        "qf": "title^2 text^1",
+    }
+    "query": "socialismo classes",
+}
+
+###
+
+# Search "residência habitual da criança nos termos do artigo 8 do regulamento bruxelas"
+
+http://{{host}}/solr/{{core}}/select
+content-type: {{contentType}}
+
+{
+    "params": {
+        "defType": "edismax",
+        "bq": "state:Consolidado^4",
+        "qf": "key^4 title^2 text^1",
+    }
+    "query": "residência habitual da criança nos termos do artigo 8 do regulamento bruxelas",
+}
+
+###
+
+# Search books that contain "pedido de indemnização civil"
+http://{{host}}/solr/{{core}}/select
+content-type: "application/json"
+
+{
+    "params": {
+        "defType": "edismax",
+        "qf": "title^2 text^1",
+        "bq": "state:Consolidado^4",
+        "fl": "book"
+    },
+    "query": "\"pedido de indemnização civil\"",
+}
+ 
+###
+
+# Search articles that contain "buscas domiciliárias / crimes informáticos / acesso ilegítimo / falsidade informática" 
+http://{{host}}/solr/{{core}}/select
+content-type: "application/json"
+
+{
+    "params": {
+        "defType": "edismax",
+        "qf": "title^2 text^1",
+        "bq": "state:Consolidado^4"
+    },
+    "query": "\"buscas domiciliárias\" \"crimes informáticos\" \"acesso ilegítimo\" \"falsidade informática\"",
+}
