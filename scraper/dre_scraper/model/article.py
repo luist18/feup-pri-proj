@@ -11,7 +11,7 @@ class Article(Scrapable):
     id = 1
 
     def __init__(self, title, url, session):
-        self.title = title
+        self.title = title.replace("\n", "\\n")
         self.url = url
         self.session = session
 
