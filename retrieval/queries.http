@@ -140,3 +140,19 @@ content-type: "application/json"
     },
     "query": "\"buscas domiciliárias\" \"crimes informáticos\" \"acesso ilegítimo\" \"falsidade informática\"",
 }
+
+###
+
+# Search tutela jurisdicional efectiva
+# the ones with the title should be first
+http://{{host}}/solr/{{core}}/select
+content-type: "application/json"
+
+{
+    "params": {
+        "defType": "edismax",
+        "qf": "key^4 title_raw^3 title^2 text_raw^1.5 text^1 path^0.5 book^4",
+        "bq": "state:Consolidado^4",
+        "q": "artigo 2 da constituicao"
+    },
+}
