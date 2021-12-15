@@ -104,9 +104,9 @@ content-type: {{contentType}}
     "params": {
         "defType": "edismax",
         "bq": "state:Consolidado^4",
-        "qf": "key^4 title_raw^3 title^2 text_raw^1.5 text^1",
+        "qf": "key^4 title_raw^3 title^2 text_raw^1.5 text^1 book^0.5"
     }
-    "query": "residência habitual da criança nos termos do artigo 8 do regulamento bruxelas",
+    "query": "construcao do socialismo artigo 1 da constituicao",
 }
 
 ###
