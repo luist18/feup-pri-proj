@@ -22,7 +22,7 @@ content-type: {{contentType}}
 
 ###
 
-# Search by articles containing "horas" in book "Código do Trabalho"
+# Search by articles containing "horas extraordinárias" in book "Código do Trabalho"
 http://{{host}}/solr/{{core}}/select
 content-type: {{contentType}}
 
@@ -30,23 +30,24 @@ content-type: {{contentType}}
     "params": {
         "defType": "edismax",
         "qf": "title_raw^3 title^2 text_raw^1.5 text^1 path^0.5",
-        "bq": "state:Consolidado^4"
+        "bq": "state:Consolidado^4",
+        "pf": "title_raw^3 title^2 text_raw^1.5 text^1 path^0.5",
     },
-    "query": "+horas +book:\"Código do Trabalho\"",
+    "query": "horas extraordinárias +book:\"Código do Trabalho\"",
 }
 
 ###
 
-# Search from the initial Constituição text (1976)
+# Search "socialismo" from the initial constituicao text (1976)
 http://{{host}}/solr/{{core}}/select
 content-type: {{contentType}}
 
 {
     "params": {
         "defType": "edismax",
-        "bq": "state:Consolidado^4",
+        "qf": "title_raw^3 title^2 text_raw^1.5 text^1 path^0.5",
     }
-    "query": "+date:[1976-01-01T00:00:00Z TO 1976-12-31T23:59:59Z] +book:Constituição",
+    "query": "socialismo +date:[1976-01-01T00:00:00Z TO 1976-12-31T23:59:59Z] +book:constituicao",
 }
 
 ###
