@@ -13,7 +13,13 @@
 					{ "class": "solr.LowerCaseFilterFactory" },
 					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" },
 					{ "class": "solr.ClassicFilterFactory" },
-					{ "class": "solr.EdgeNGramFilterFactory", "preserveOriginal": "true", "minGramSize": "4", "maxGramSize": "46" }
+					{
+						"class": "solr.EdgeNGramFilterFactory",
+						"preserveOriginal": "true",
+						"minGramSize": "4",
+						"maxGramSize": "46"
+					},
+					{ "class": "solr.PortugueseStemFilterFactory" }
 				]
 			},
 			"queryAnalyzer": {
@@ -26,7 +32,33 @@
 					{ "class": "solr.LowerCaseFilterFactory" },
 					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" },
 					{ "class": "solr.ClassicFilterFactory" },
-					{ "class": "solr.EdgeNGramFilterFactory", "preserveOriginal": "true", "minGramSize": "4", "maxGramSize": "46" }
+					{ "class": "solr.PortugueseStemFilterFactory" }
+				]
+			}
+		},
+		{
+			"name": "text_raw_type",
+			"class": "solr.TextField",
+			"indexAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
+					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": true },
+					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.ClassicFilterFactory" }
+				]
+			},
+			"queryAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
+					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": true },
+					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.ClassicFilterFactory" }
 				]
 			}
 		},
@@ -57,9 +89,15 @@
 				"filters": [
 					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
 					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" },
 					{ "class": "solr.ClassicFilterFactory" },
-					{ "class": "solr.EdgeNGramFilterFactory", "preserveOriginal": "true", "minGramSize": "4", "maxGramSize": "46" },
-					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" }
+					{
+						"class": "solr.EdgeNGramFilterFactory",
+						"preserveOriginal": "true",
+						"minGramSize": "4",
+						"maxGramSize": "46"
+					},
+					{ "class": "solr.PortugueseStemFilterFactory" }
 				]
 			},
 			"queryAnalyzer": {
@@ -70,7 +108,31 @@
 					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
 					{ "class": "solr.LowerCaseFilterFactory" },
 					{ "class": "solr.ClassicFilterFactory" },
-					{ "class": "solr.EdgeNGramFilterFactory", "preserveOriginal": "true", "minGramSize": "4", "maxGramSize": "46" }
+					{ "class": "solr.PortugueseStemFilterFactory" }
+				]
+			}
+		},
+		{
+			"name": "title_raw_type",
+			"class": "solr.TextField",
+			"indexAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": true },
+					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.ClassicFilterFactory" }
+				]
+			},
+			"queryAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": true },
+					{ "class": "solr.LowerCaseFilterFactory" },
+					{ "class": "solr.ClassicFilterFactory" },
 				]
 			}
 		}
@@ -88,6 +150,12 @@
 			"indexed": true
 		},
 		{
+			"name": "text_raw",
+			"type": "text_raw_type",
+			"stored": true,
+			"indexed": true
+		},
+		{
 			"name": "key",
 			"type": "key_type",
 			"stored": true,
@@ -97,6 +165,12 @@
 		{
 			"name": "title",
 			"type": "title_type",
+			"stored": true,
+			"indexed": true
+		},
+		{
+			"name": "title_raw",
+			"type": "title_raw_type",
 			"stored": true,
 			"indexed": true
 		},
@@ -133,6 +207,16 @@
 			"type": "text_general",
 			"stored": true,
 			"required": true
+		}
+	],
+	"add-copy-field": [
+		{
+			"source": "text",
+			"dest": ["text_raw"]
+		},
+		{
+			"source": "title",
+			"dest": ["title_raw"]
 		}
 	]
 }

@@ -13,7 +13,7 @@ content-type: {{contentType}}
 {
     "params": {
         "defType": "edismax",
-        "qf": "title^2 text^1 path^0.5 book^0.25",
+        "qf": "title_raw^3 title^2 text_raw^1.5 text^1 path^0.5 book^0.25",
         "bq": "state:Consolidado^4"
     }
     "query": "horas",
@@ -28,7 +28,7 @@ content-type: {{contentType}}
 {
     "params": {
         "defType": "edismax",
-        "qf": "title^2 text^1 path^0.5",
+        "qf": "title_raw^3 title^2 text_raw^1.5 text^1 path^0.5",
         "bq": "state:Consolidado^4"
     },
     "query": "+horas +book:\"Código do Trabalho\"",
@@ -58,7 +58,7 @@ content-type: {{contentType}}
     "params": {
         "defType": "edismax",
         "bq": "state:Consolidado^4",
-        "qf": "title",
+        "qf": "title_raw^1.5 title",
     }
     "query": "trabalhador",
 }
@@ -73,7 +73,7 @@ content-type: {{contentType}}
     "params": {
         "defType": "edismax",
         "bq": "state:Consolidado^4",
-        "qf": "title",
+        "qf": "title_raw^1.5 title",
     }
     "query": "trabalhador -book:\"Código do Trabalho\"",
 }
@@ -88,9 +88,9 @@ content-type: {{contentType}}
     "params": {
         "defType": "edismax",
         "bq": "state:Consolidado^4",
-        "qf": "title^2 text^1",
+        "qf": "title_raw^3 title^2 text_raw^1.5 text^1",
     }
-    "query": "socialismo classes",
+    "query": "socialismo",
 }
 
 ###
@@ -104,7 +104,7 @@ content-type: {{contentType}}
     "params": {
         "defType": "edismax",
         "bq": "state:Consolidado^4",
-        "qf": "key^4 title^2 text^1",
+        "qf": "key^4 title_raw^3 title^2 text_raw^1.5 text^1",
     }
     "query": "residência habitual da criança nos termos do artigo 8 do regulamento bruxelas",
 }
@@ -118,7 +118,7 @@ content-type: "application/json"
 {
     "params": {
         "defType": "edismax",
-        "qf": "title^2 text^1",
+        "qf": "title_raw^3 title^2 text_raw^1.5 text^1",
         "bq": "state:Consolidado^4",
         "fl": "book"
     },
@@ -134,7 +134,7 @@ content-type: "application/json"
 {
     "params": {
         "defType": "edismax",
-        "qf": "title^2 text^1",
+        "qf": "title_raw^3 title^2 text_raw^1.5 text^1",
         "bq": "state:Consolidado^4"
     },
     "query": "\"buscas domiciliárias\" \"crimes informáticos\" \"acesso ilegítimo\" \"falsidade informática\"",
