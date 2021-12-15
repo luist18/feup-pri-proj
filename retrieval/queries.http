@@ -6,7 +6,7 @@
 
 ###
 
-# Search by articles containing "horas"
+# Search by articles containing "horas extraordinárias"
 http://{{host}}/solr/{{core}}/select
 content-type: {{contentType}}
 
@@ -14,9 +14,10 @@ content-type: {{contentType}}
     "params": {
         "defType": "edismax",
         "qf": "title_raw^3 title^2 text_raw^1.5 text^1 path^0.5 book^0.25",
-        "bq": "state:Consolidado^4"
-    }
-    "query": "horas",
+        "bq": "state:Consolidado^4",
+        "pf": "title_raw^3 title^2 text_raw^1.5 text^1 path^0.5 book^0.25",
+    },
+    "query": "horas extraordinárias",
 }
 
 ###
