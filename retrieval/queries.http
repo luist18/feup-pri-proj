@@ -42,7 +42,7 @@ content-type: {{contentType}}
 http://{{host}}/solr/{{core}}/select
 content-type: {{contentType}}
 
-{
+{ 
     "params": {
         "defType": "edismax",
         "qf": "title_raw^3 title^2 text_raw^1.5 text^1 path^0.5",
@@ -52,7 +52,7 @@ content-type: {{contentType}}
 
 ###
 
-# Search articles by a title containing "trabalhador"
+# Search articles by a title containing "horário flexível"
 http://{{host}}/solr/{{core}}/select
 content-type: {{contentType}}
 
@@ -62,7 +62,7 @@ content-type: {{contentType}}
         "bq": "state:Consolidado^4",
         "qf": "title_raw^1.5 title",
     }
-    "query": "trabalhador",
+    "query": "horário flexível",
 }
 
 ###
@@ -97,8 +97,7 @@ content-type: {{contentType}}
 
 ###
 
-# Search "residência habitual da criança nos termos do artigo 8 do regulamento bruxelas"
-
+# Search "transformar numa sociedade sem clases artigo 1 da constituicao"
 http://{{host}}/solr/{{core}}/select
 content-type: {{contentType}}
 
@@ -108,7 +107,7 @@ content-type: {{contentType}}
         "bq": "state:Consolidado^4",
         "qf": "key^4 title_raw^3 title^2 text_raw^1.5 text^1 book^0.5"
     }
-    "query": "construcao do socialismo artigo 1 da constituicao",
+    "query": "transformar numa sociedade sem clases artigo 1 da constituicao",
 }
 
 ###
