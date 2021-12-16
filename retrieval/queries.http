@@ -143,8 +143,7 @@ content-type: "application/json"
 
 ###
 
-# Search tutela jurisdicional efectiva
-# the ones with the title should be first
+# Search for the second article of the constituicau [sic]
 http://{{host}}/solr/{{core}}/select
 content-type: "application/json"
 
@@ -153,6 +152,8 @@ content-type: "application/json"
         "defType": "edismax",
         "qf": "key^4 title_raw^3 title^2 text_raw^1.5 text^1 path^0.5 book^4",
         "bq": "state:Consolidado^4",
-        "q": "artigo 2 da constituicao"
+        "q": "artigo~ 2~ da~ constituicau~",
+        "start": 0,
+        "rows": 1000
     },
 }
