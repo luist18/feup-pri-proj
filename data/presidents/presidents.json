@@ -1,0 +1,44 @@
+[
+    {
+        "date_end": "September 30, 1974",
+        "date_start": "May 15, 1974",
+        "name": "António de Spínola",
+        "political_party": "Military officer"
+    },
+    {
+        "date_end": "July 13, 1976",
+        "date_start": "September 30, 1974",
+        "name": "Francisco da Costa Gomes",
+        "political_party": "Military officer"
+    },
+    {
+        "date_end": "March 9, 1986",
+        "date_start": "July 14, 1976",
+        "name": "António Ramalho Eanes",
+        "political_party": "Democratic Renewal"
+    },
+    {
+        "date_end": "March 9, 1996",
+        "date_start": "March 9, 1986",
+        "name": "Mário Soares",
+        "political_party": "Socialist"
+    },
+    {
+        "date_end": "March 9, 2006",
+        "date_start": "March 9, 1996",
+        "name": "Jorge Sampaio",
+        "political_party": "Socialist"
+    },
+    {
+        "date_end": "March 9, 2016",
+        "date_start": "March 9, 2006",
+        "name": "Aníbal Cavaco Silva",
+        "political_party": "Social Democratic"
+    },
+    {
+        "date_end": "Incumbent (Term ends on March 9, 2026)",
+        "date_start": "March 9, 2016",
+        "name": "Marcelo Rebelo de Sousa",
+        "political_party": "Social Democratic"
+    }
+]
