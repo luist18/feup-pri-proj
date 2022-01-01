@@ -8,18 +8,35 @@
 					"class": "solr.ClassicTokenizerFactory"
 				},
 				"filters": [
-					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
-					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
-					{ "class": "solr.LowerCaseFilterFactory" },
-					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" },
-					{ "class": "solr.ClassicFilterFactory" },
+					{
+						"class": "solr.PatternReplaceFilterFactory",
+						"pattern": "\\\\\\\\n\\w",
+						"replacement": " "
+					},
+					{
+						"class": "solr.ASCIIFoldingFilterFactory",
+						"preserveOriginal": false
+					},
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					},
+					{
+						"class": "solr.StopFilterFactory",
+						"words": "lang/stopwords_pt.txt",
+						"ignoreCase": "true"
+					},
+					{
+						"class": "solr.ClassicFilterFactory"
+					},
 					{
 						"class": "solr.EdgeNGramFilterFactory",
 						"preserveOriginal": "true",
 						"minGramSize": "4",
 						"maxGramSize": "46"
 					},
-					{ "class": "solr.PortugueseStemFilterFactory" }
+					{
+						"class": "solr.PortugueseStemFilterFactory"
+					}
 				]
 			},
 			"queryAnalyzer": {
@@ -27,12 +44,24 @@
 					"class": "solr.ClassicTokenizerFactory"
 				},
 				"filters": [
-					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
-					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
-					{ "class": "solr.LowerCaseFilterFactory" },
-					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" },
-					{ "class": "solr.ClassicFilterFactory" },
-					{ "class": "solr.PortugueseStemFilterFactory" }
+					{
+						"class": "solr.ASCIIFoldingFilterFactory",
+						"preserveOriginal": false
+					},
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					},
+					{
+						"class": "solr.StopFilterFactory",
+						"words": "lang/stopwords_pt.txt",
+						"ignoreCase": "true"
+					},
+					{
+						"class": "solr.ClassicFilterFactory"
+					},
+					{
+						"class": "solr.PortugueseStemFilterFactory"
+					}
 				]
 			}
 		},
@@ -44,10 +73,21 @@
 					"class": "solr.ClassicTokenizerFactory"
 				},
 				"filters": [
-					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
-					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": true },
-					{ "class": "solr.LowerCaseFilterFactory" },
-					{ "class": "solr.ClassicFilterFactory" }
+					{
+						"class": "solr.PatternReplaceFilterFactory",
+						"pattern": "\\\\\\\\n\\w",
+						"replacement": " "
+					},
+					{
+						"class": "solr.ASCIIFoldingFilterFactory",
+						"preserveOriginal": true
+					},
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					},
+					{
+						"class": "solr.ClassicFilterFactory"
+					}
 				]
 			},
 			"queryAnalyzer": {
@@ -55,10 +95,16 @@
 					"class": "solr.ClassicTokenizerFactory"
 				},
 				"filters": [
-					{ "class": "solr.PatternReplaceFilterFactory", "pattern": "\\\\\\\\n\\w\\)", "replacement": " " },
-					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": true },
-					{ "class": "solr.LowerCaseFilterFactory" },
-					{ "class": "solr.ClassicFilterFactory" }
+					{
+						"class": "solr.ASCIIFoldingFilterFactory",
+						"preserveOriginal": true
+					},
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					},
+					{
+						"class": "solr.ClassicFilterFactory"
+					}
 				]
 			}
 		},
@@ -70,34 +116,10 @@
 					"class": "solr.PathHierarchyTokenizerFactory",
 					"delimiter": "-"
 				},
-				"filters": [{ "class": "solr.LowerCaseFilterFactory" }]
-			},
-			"queryAnalyzer": {
-				"tokenizer": {
-					"class": "solr.ClassicTokenizerFactory"
-				},
-				"filters": [{ "class": "solr.LowerCaseFilterFactory" }]
-			}
-		},
-		{
-			"name": "title_type",
-			"class": "solr.TextField",
-			"indexAnalyzer": {
-				"tokenizer": {
-					"class": "solr.ClassicTokenizerFactory"
-				},
 				"filters": [
-					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
-					{ "class": "solr.LowerCaseFilterFactory" },
-					{ "class": "solr.StopFilterFactory", "words": "lang/stopwords_pt.txt", "ignoreCase": "true" },
-					{ "class": "solr.ClassicFilterFactory" },
 					{
-						"class": "solr.EdgeNGramFilterFactory",
-						"preserveOriginal": "true",
-						"minGramSize": "4",
-						"maxGramSize": "46"
-					},
-					{ "class": "solr.PortugueseStemFilterFactory" }
+						"class": "solr.LowerCaseFilterFactory"
+					}
 				]
 			},
 			"queryAnalyzer": {
@@ -105,34 +127,9 @@
 					"class": "solr.ClassicTokenizerFactory"
 				},
 				"filters": [
-					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": false },
-					{ "class": "solr.LowerCaseFilterFactory" },
-					{ "class": "solr.ClassicFilterFactory" },
-					{ "class": "solr.PortugueseStemFilterFactory" }
-				]
-			}
-		},
-		{
-			"name": "title_raw_type",
-			"class": "solr.TextField",
-			"indexAnalyzer": {
-				"tokenizer": {
-					"class": "solr.ClassicTokenizerFactory"
-				},
-				"filters": [
-					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": true },
-					{ "class": "solr.LowerCaseFilterFactory" },
-					{ "class": "solr.ClassicFilterFactory" }
-				]
-			},
-			"queryAnalyzer": {
-				"tokenizer": {
-					"class": "solr.ClassicTokenizerFactory"
-				},
-				"filters": [
-					{ "class": "solr.ASCIIFoldingFilterFactory", "preserveOriginal": true },
-					{ "class": "solr.LowerCaseFilterFactory" },
-					{ "class": "solr.ClassicFilterFactory" },
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					}
 				]
 			}
 		}
@@ -152,7 +149,7 @@
 		{
 			"name": "text_raw",
 			"type": "text_raw_type",
-			"stored": true,
+			"stored": false,
 			"indexed": true
 		},
 		{
@@ -164,14 +161,14 @@
 		},
 		{
 			"name": "title",
-			"type": "title_type",
+			"type": "text_type",
 			"stored": true,
 			"indexed": true
 		},
 		{
 			"name": "title_raw",
-			"type": "title_raw_type",
-			"stored": true,
+			"type": "text_raw_type",
+			"stored": false,
 			"indexed": true
 		},
 		{
@@ -189,7 +186,7 @@
 		},
 		{
 			"name": "path",
-			"type": "title_type",
+			"type": "text_type",
 			"stored": true,
 			"indexed": true,
 			"required": true,
@@ -197,7 +194,7 @@
 		},
 		{
 			"name": "book",
-			"type": "title_type",
+			"type": "text_type",
 			"stored": true,
 			"indexed": true,
 			"required": true
@@ -212,11 +209,15 @@
 	"add-copy-field": [
 		{
 			"source": "text",
-			"dest": ["text_raw"]
+			"dest": [
+				"text_raw"
+			]
 		},
 		{
 			"source": "title",
-			"dest": ["title_raw"]
+			"dest": [
+				"title_raw"
+			]
 		}
 	]
 }
