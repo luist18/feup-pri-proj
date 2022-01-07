@@ -204,6 +204,16 @@
 			"type": "text_general",
 			"stored": true,
 			"required": true
+		},
+		{
+			"name": "president_name",
+			"type": "text_general",
+			"stored": true
+		},
+		{
+			"name": "president_party",
+			"type": "text_general",
+			"stored": true
 		}
 	],
 	"add-copy-field": [

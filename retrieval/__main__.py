@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 import pandas as pd
 
@@ -23,9 +24,62 @@ def main():
                               force_ascii=False, indent=4)
 
 
+def _get_presidents():
+    with open("data/presidents/presidents.json", "r") as file:
+        presidents = json.load(file)
+
+    for president in presidents:
+        president['date_start'] = datetime.strptime(
+            president['date_start'], '%B %d, %Y')
+
+        if 'Incumbent' in president['date_end']:
+            president['date_end'] = None
+        else:
+            president['date_end'] = datetime.strptime(
+                president['date_end'], '%B %d, %Y')
+
+    return presidents
+
+def _binary_search(presidents, date):
+    # binary search on the presidents list
+    left = 0
+    right = len(presidents) - 1
+
+    while left <= right:
+        middle = (left + right) // 2
+        president = presidents[middle]
+
+        if ((president['date_start'] <= date and president['date_end'] is None) or president['date_start'] <= date <= president['date_end']):
+            return presidents[middle]
+        elif president['date_start'] > date:
+            right = middle - 1
+        else:
+            left = middle + 1
+
+    return None
+
+
+def _add_president(row, presidents):
+    # transforms the date to a datetime object
+    article_date = row['date']
+    article_date = datetime.strptime(article_date, '%Y-%m-%d')
+
+    # binary search on the presidents list
+    president = _binary_search(presidents, article_date)
+
+    # adds the president to the row
+    if president is not None:
+        row['president_name'] = president['name']
+        row['president_party'] = president['political_party']
+
+    return row
+
 def create_article_documents(article, book, section):
     print("Articles")
     df = article.copy()
+
+    # reads the presidents json
+    presidents = _get_presidents()
 
     # drops unnecessary columns
     df = df.drop(['header', 'initial', 'current'], axis=1)
@@ -33,6 +87,7 @@ def create_article_documents(article, book, section):
     # creates paths
     # TODO shit algorithm this one
     df = df.apply(lambda row: _create_path(row, book, section, df), axis=1)
+    df = df.apply(lambda row: _add_president(row, presidents), axis=1)
     print(f'\r100%        ')
 
     df = df.drop(['section_id', 'article_id'], axis=1)
