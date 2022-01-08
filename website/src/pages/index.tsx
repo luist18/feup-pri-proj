@@ -11,7 +11,10 @@ const Home: NextPage = () => (
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        Google
         <SearchBar/>
+        <button type="submit">Search</button>
+        <button type="submit">I&apos;m feeling lucky</button>
       </main>
     </>
   )

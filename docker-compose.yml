@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  # Proxies requests to internal services
+  reverse-proxy:
+    image: nginx:1.17.10
+    container_name: reverse-proxy_dev
+    depends_on:
+      - website
+      - solr
+    volumes:
+      - ./reverse-proxy/nginx.dev.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+
+  website:
+    image: website_dev
+    container_name: website_dev
+    build:
+      context: ./website
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./website:/usr/app
+      - /usr/app/node_modules
+      - /usr/app/.next
+    depends_on:
+      - solr
+    ports:
+      - 3000:3000
+    restart: on-failure
+
+  solr:
+    image: solr_dev
+    container_name: solr_dev
+    build:
+      context: ./retrieval
+      dockerfile: Dockerfile
+      args:
+        - SCHEMA_TYPE=SCHEMA
+    ports:
+      - 8983:8983
+    restart: on-failure
+
+volumes:
+  node_modules:
