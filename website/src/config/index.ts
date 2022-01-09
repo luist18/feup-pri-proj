@@ -1,1 +1,1 @@
-export const solrURL = '/solr/articles/select'
+export const solrURL = '/solr/solr/articles/select'

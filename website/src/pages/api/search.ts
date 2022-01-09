@@ -3,13 +3,19 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import fetch from 'node-fetch'
 
 import { solrURL } from 'config'
-import { ServerResponse } from 'http'
 
 type Data = {
-  name: string
+  data: any
 }
 
-async function handleGet(req: NextApiRequest, res: NextApiResponse<Data>): Promise<ServerResponse> {
+type ErrorResponse = {
+  error: string
+}
+
+async function handleGet(
+  req: NextApiRequest,
+  res: NextApiResponse<Data | ErrorResponse>
+) {
   const { query } = req.body
 
   const content = {
@@ -22,18 +28,29 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse<Data>): Promi
     query,
   }
 
-  await fetch(solrURL, { method: 'GET', body: JSON.stringify(content) })
+  try {
+    const request = await fetch(`http://localhost${  solrURL}`, { method: 'GET', body: JSON.stringify(content) })
 
-  return res.status(200).json({ name: 'John Doe' })
+    const data = await request.json()
+
+    res.status(200).json({ data })
+  } catch (err : any) {
+    res.status(500).json({ error: err })
+  }  
 }
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Data | ErrorResponse>
 ) {
-  if (req.method === 'GET') {
-    const result = await handleGet(req, res)
+  const { method } = req
 
-    return result
+  switch (method) {
+    case 'GET':
+      handleGet(req, res)
+      break
+    default:
+      res.setHeader('Allow', ['GET'])
+      res.status(405).end(`Method ${method} Not Allowed`)
   }
 }
