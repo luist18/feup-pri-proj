@@ -83,8 +83,10 @@ async function get(
     }
 
     res.status(200).json(reply)
-  } catch (err: any) {
-    res.status(500).json({ error: err.message })
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(500).json({ error: err.message })
+    }
   }
 }
 
