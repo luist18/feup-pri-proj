@@ -58,3 +58,92 @@ export async function fetchArticles(query = '*:*', page = 1) {
 
   return reply
 }
+
+export async function fetchRelated(document: QueryDocument) {
+  const content = {
+    query: `+key:${document.key} +book_url:"${document.bookUrl}" -id:${
+      document.id
+    } +path:(${document.path.map((value) => `"+${value}"`).join(' ')})`,
+    params: {
+      debugQuery: true,
+      defType: 'edismax',
+    },
+  }
+
+  const request = await axios.get(`http://solr:8983${solrURL}`, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    },
+    data: content,
+  })
+
+  const { data }: { data: SolrResponse } = request
+
+  const { docs } = data.response
+
+  const parsedDocs: QueryDocument[] = docs.map((doc: SolrArticleDocument) => ({
+    book: doc.book,
+    bookUrl: doc.book_url,
+    date: doc.date,
+    key: doc.key,
+    path: doc.path,
+    presidentName: doc.president_name,
+    presidentParty: doc.president_party,
+    state: doc.state,
+    text: doc.text,
+    title: doc.title,
+    id: doc.id,
+  }))
+
+  return parsedDocs
+}
+
+export async function fetchArticle(id: string) {
+  const content = {
+    limit: 1,
+    query: `id:${id}`,
+  }
+
+  const request = await axios.get(`http://solr:8983${solrURL}`, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    },
+    data: content,
+  })
+
+  const { data }: { data: SolrResponse } = request
+
+  const { docs } = data.response
+
+  const parsedDocs: QueryDocument[] = docs.map((doc: SolrArticleDocument) => ({
+    book: doc.book,
+    bookUrl: doc.book_url,
+    date: doc.date,
+    key: doc.key,
+    path: doc.path,
+    presidentName: doc.president_name,
+    presidentParty: doc.president_party,
+    state: doc.state,
+    text: doc.text,
+    title: doc.title,
+    id: doc.id,
+  }))
+
+  const doc = parsedDocs[0] || undefined
+
+  if (doc === undefined) {
+    return {
+      article: undefined,
+      related: [],
+    }
+  }
+
+  const related = await fetchRelated(doc)
+
+  return {
+    article: doc,
+    related,
+  }
+}

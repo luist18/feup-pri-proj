@@ -49,3 +49,8 @@ export type QueryReply = {
   query: string
   start: number
 }
+
+export type RelatedQueryReply = {
+  article: QueryDocument | undefined
+  related: QueryDocument[]
+}

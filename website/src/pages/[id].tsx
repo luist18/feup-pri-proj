@@ -1,21 +1,17 @@
-import { NextPage } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import Footer from 'components/Footer'
 import Header from 'components/Header'
 import Layout from 'components/Layout'
 import SearchResults from 'components/Results'
-import { useSearch } from 'context/search'
 
-const Results: NextPage = () => {
-  const { searchQuery } = useSearch()
+function Results() {
+  const router = useRouter()
 
-  useEffect(() => {
-    searchQuery('', 1)
-  }, [])
-
+  console.log(router.query.id)
   return (
     <>
       <Head>
