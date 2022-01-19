@@ -18,22 +18,27 @@ export default function Results(): ReactElement {
     <Container className="flex flex-col mt-8">
       <header className="my-4">
         <span className="text-lg app-grey font-medium">
-          {numberWithSpaces(state.count)} resultados encontrados
+          {numberWithSpaces(state.count)}{' '}
+          {state.count === 1
+            ? 'resultado encontrado'
+            : 'resultados encontrados'}
         </span>
       </header>
       <main className="space-y-5">{cards}</main>
       <footer>
-        <ResultsPagination
-          count={state.count}
-          length={state.results.length}
-          start={state.start}
-          onPrevious={() => {
-            searchQuery(search, state.page - 1)
-          }}
-          onNext={() => {
-            searchQuery(search, state.page + 1)
-          }}
-        />
+        {state.count > 0 ? (
+          <ResultsPagination
+            count={state.count}
+            length={state.results.length}
+            start={state.start}
+            onPrevious={() => {
+              searchQuery(search, state.page - 1)
+            }}
+            onNext={() => {
+              searchQuery(search, state.page + 1)
+            }}
+          />
+        ) : undefined}
       </footer>
     </Container>
   )

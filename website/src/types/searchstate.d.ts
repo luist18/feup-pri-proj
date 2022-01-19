@@ -10,7 +10,7 @@ export type SearchState = {
 }
 
 export type SearchAction =
-  | { type: 'SET_QUERY'; query: string }
+  | { type: 'SEARCH_START'; payload: QueryReply }
   | { type: 'SEARCH_QUERY_REQUEST' }
   | { type: 'SEARCH_QUERY_SUCCESS'; payload: QueryReply }
   | { type: 'SEARCH_QUERY_FAILURE' }

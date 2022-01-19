@@ -14,6 +14,16 @@ export const reducer = (
   action: SearchAction
 ): SearchState => {
   switch (action.type) {
+    case 'SEARCH_START':
+      return {
+        ...previousState,
+        loading: false,
+        error: false,
+        results: action.payload.data,
+        start: action.payload.start,
+        count: action.payload.count,
+        page: action.payload.page,
+      }
     case 'SEARCH_QUERY_REQUEST':
       return { ...previousState, loading: true, error: false }
     case 'SEARCH_QUERY_SUCCESS':
