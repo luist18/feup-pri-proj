@@ -19,7 +19,7 @@ type SearchContextProps = {
   setSearch: (search: string) => void
   state: SearchState
   // eslint-disable-next-line no-unused-vars
-  searchQuery: (query: string) => void
+  searchQuery: (query: string, page: number) => void
 }
 
 const SearchContext = React.createContext<SearchContextProps>({
@@ -46,24 +46,29 @@ export default function SearchProvider({ children }: Props): ReactElement {
   const [state, dispatch] = useReducer(SearchReducer, initialState)
 
   const searchValue = useMemo(() => {
-    async function searchQuery(query: string) {
+    async function searchQuery(query: string, page = 1) {
       dispatch({ type: 'SEARCH_QUERY_REQUEST' })
       setSearch(query)
 
-      const request = await axios.get('/api/search', {
-        params: {
-          query,
-        },
-      })
+      try {
+        const request = await axios.get('/api/search', {
+          params: {
+            query,
+            page,
+          },
+        })
 
-      if (request.status !== 200) {
+        if (request.status !== 200) {
+          dispatch({ type: 'SEARCH_QUERY_FAILURE' })
+          return
+        }
+
+        const { data }: { data: QueryReply } = request
+
+        dispatch({ type: 'SEARCH_QUERY_SUCCESS', payload: data })
+      } catch (err) {
         dispatch({ type: 'SEARCH_QUERY_FAILURE' })
-        return
       }
-
-      const { data }: { data: QueryReply } = request
-
-      dispatch({ type: 'SEARCH_QUERY_SUCCESS', payload: data })
     }
 
     return {

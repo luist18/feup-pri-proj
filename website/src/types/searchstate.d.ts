@@ -2,6 +2,7 @@ import { QueryDocument, QueryReply } from './solr'
 
 export type SearchState = {
   page: number
+  start: number
   count: number
   results: QueryDocument[]
   loading: boolean

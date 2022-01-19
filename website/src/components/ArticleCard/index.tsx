@@ -27,7 +27,7 @@ function stateColor(state: string | undefined): string {
 export default function ArticleCard({ document }: Props): ReactElement {
   return (
     <Container className="flex flex-col">
-      <header className="flex items-center mb-2">
+      <header className="flex items-center mb-2 flex-col sm:flex-row">
         <h2 className="text-xl font-semibold article-title">{`Artigo ${document.key}º (${document.title})`}</h2>
         <span
           className="ml-auto h-full text-sm font-medium text-white py-1.5 px-3 rounded-xl"

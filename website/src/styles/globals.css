@@ -43,3 +43,11 @@ a {
 .app-grey {
   color: var(--article-path);
 }
+
+.app-dark-grey {
+  color: var(--article-text);
+}
+
+input:focus {
+  outline: none;
+}

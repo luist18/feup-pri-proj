@@ -1,6 +1,7 @@
 import { SearchState, SearchAction } from 'types/searchstate'
 
 export const initialState: SearchState = {
+  start: 1,
   page: 1,
   count: 0,
   results: [],
@@ -20,6 +21,7 @@ export const reducer = (
         ...previousState,
         loading: false,
         results: action.payload.data,
+        start: action.payload.start,
         count: action.payload.count,
         page: action.payload.page,
       }

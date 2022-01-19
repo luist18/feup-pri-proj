@@ -7,5 +7,5 @@ export const Container = styled.div`
 
   gap: 10px;
   grid-template-areas: 'filters results blank';
-  grid-template-columns: auto 930px auto;
+  grid-template-columns: auto minmax(250px, 930px) auto;
 `
