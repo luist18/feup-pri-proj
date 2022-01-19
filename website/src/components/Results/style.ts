@@ -3,5 +3,5 @@ import styled from 'styled-components'
 export const Container = styled.div`
   grid-area: results;
 
-  background-color: red;
+  max-width: 930px;
 `
