@@ -43,8 +43,9 @@ export type QueryDocument = {
 }
 
 export type QueryReply = {
-  page: number
-  start: number
   count: number
   data: QueryDocument[]
+  page: number
+  query: string
+  start: number
 }

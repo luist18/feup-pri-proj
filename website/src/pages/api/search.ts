@@ -1,17 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import { solrURL, DOCUMENTS_PER_PAGE } from 'config'
+import axios from 'config/axios'
 import type {
   QueryReply,
   QueryDocument,
   SolrArticleDocument,
   SolrResponse,
 } from 'types/solr'
-
-import { solrURL } from 'config'
-import axios from 'config/axios'
-
-const DOCUMENTS_PER_PAGE = 20
 
 type ErrorResponse = {
   error: string
@@ -21,11 +18,19 @@ async function get(
   req: NextApiRequest,
   res: NextApiResponse<QueryReply | ErrorResponse>
 ) {
-  let { query } = req.body
+  const { query: queryParam = '*:*' } = req.query
 
-  if (query.length === 0) query = '*:*'
+  let query = Array.isArray(queryParam) ? queryParam.join(' ') : queryParam
+  query = query.trim().length === 0 ? '*:*' : query.trim()
 
-  const { page = 1 } = req.body
+  const { page: pageRaw = '1' } = req.query
+
+  let page: number
+  try {
+    page = parseInt(pageRaw as string, 10)
+  } catch (err) {
+    page = 1
+  }
 
   if (page < 1) {
     res.status(400).json({ error: 'Page must be greater or equal than 1' })
@@ -76,10 +81,11 @@ async function get(
     )
 
     const reply: QueryReply = {
-      page,
-      start,
       count,
       data: parsedDocs,
+      page,
+      query,
+      start: start + 1,
     }
 
     res.status(200).json(reply)

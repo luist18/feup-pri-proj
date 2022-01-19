@@ -21,7 +21,8 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "import-helpers"
     ],
     "rules": {
         "react/function-component-definition": "off",
@@ -45,6 +46,27 @@
                 "jsx": "never",
                 "ts": "never",
                 "tsx": "never"
+            }
+        ],
+        "import-helpers/order-imports": [
+            "warn",
+            {
+                "newlinesBetween": "always", // new line between groups
+                "groups": [
+                    "/^next/",
+                    "/^react/",
+                    "module",
+                    "/^@/",
+                    [
+                        "parent",
+                        "sibling",
+                        "index"
+                    ]
+                ],
+                "alphabetize": {
+                    "order": "asc",
+                    "ignoreCase": true
+                }
             }
         ]
     }
