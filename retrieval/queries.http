@@ -6,7 +6,7 @@
 
 ###
 
-# Search by articles containing "horas extraordinárias"
+# Search by articles containing "horas suplementares"
 http://{{host}}/solr/{{core}}/select
 content-type: {{contentType}}
 
@@ -18,12 +18,12 @@ content-type: {{contentType}}
         "bq": "state:Consolidado^4",
         "tie": "1.0"
     },
-    "query": "art 2 registo civil"
+    "query": "horas suplementares"
 }
 
 ###
 
-# Search by articles containing "horas extraordinárias" in book "Código do Trabalho"
+# Search by articles containing "horas suplementares" in book "Código do Trabalho"
 http://{{host}}/solr/{{core}}/select
 content-type: {{contentType}}
 
@@ -34,7 +34,7 @@ content-type: {{contentType}}
         "bq": "state:Consolidado^4",
         "pf": "title_raw^3 title^2 text_raw^1.5 text^1 path^0.5"
     },
-    "query": "+\"horas extraordinárias\" +book:\"Código do Trabalho\"",
+    "query": "+\"horas suplementares\" +book:\"Código do Trabalho\"",
 }
 
 ###
@@ -68,7 +68,7 @@ content-type: {{contentType}}
  
 ###
 
-# Search for the second article of the constituicau [sic]
+# Search for the first article of the constituicau [sic]
 http://{{host}}/solr/{{core}}/select
 content-type: "application/json"
 
@@ -77,7 +77,7 @@ content-type: "application/json"
         "defType": "edismax",
         "qf": "key^4 title_raw^3 title^2 text_raw^1.5 text^1 path^0.5 book^4",
         "bq": "state:Consolidado^4",
-        "q": "artigo~ 2~ da~ constituicau~",
+        "q": "artigo~ 1~ da~ constituicau~",
         "start": 0,
         "rows": 1000
     },
