@@ -6,7 +6,7 @@ import { Container } from './style'
 
 export default function Header(): ReactElement {
   return (
-    <Container className="relative flex sm:grid grid-cols-6">
+    <Container className="flex sm:grid grid-cols-6 sticky -top-44 left-0 z-50">
       <div className="col-span-1 hidden sm:flex" />
       <div className="col-span-4 flex items-center">
         <h2 className="font-bold text-white hidden sm:flex sm:text-xl md:text-3xl">

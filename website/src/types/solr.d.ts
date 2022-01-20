@@ -4,8 +4,8 @@ export type SolrArticleDocument = {
   date: Date
   key: string
   path: string[]
-  president_name: string
-  president_party: string
+  president_name: string | null
+  president_party: string | null
   state: string
   text: string
   title: string
@@ -34,8 +34,8 @@ export type QueryDocument = {
   date: Date
   key: string
   path: string[]
-  presidentName: string
-  presidentParty: string
+  presidentName: string | null
+  presidentParty: string | null
   state: string
   text: string
   title: string

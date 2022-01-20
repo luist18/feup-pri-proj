@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  grid-area: results;
+  grid-area: content;
 
   max-width: 930px;
 `

@@ -3,5 +3,5 @@ import React, { ReactElement } from 'react'
 import { Container } from './style'
 
 export default function Footer(): ReactElement {
-  return <Container />
+  return <Container className="mt-10" />
 }

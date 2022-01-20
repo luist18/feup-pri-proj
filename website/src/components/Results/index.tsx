@@ -14,6 +14,16 @@ export default function Results(): ReactElement {
     <ArticleCard key={document.id} document={document} />
   ))
 
+  if (state.loading) {
+    return (
+      <Container className="flex flex-col mt-8">
+        <header className="my-4">
+          <span className="text-lg app-grey font-medium">A procurar...</span>
+        </header>
+      </Container>
+    )
+  }
+
   return (
     <Container className="flex flex-col mt-8">
       <header className="my-4">

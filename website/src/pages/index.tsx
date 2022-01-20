@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import React, { useEffect } from 'react'
 
@@ -10,11 +11,22 @@ import SearchResults from 'components/Results'
 import { useSearch } from 'context/search'
 
 const Results: NextPage = () => {
-  const { searchQuery } = useSearch()
+  const { searchQuery, state } = useSearch()
+  const router = useRouter()
 
   useEffect(() => {
-    searchQuery('', 1)
-  }, [])
+    const { query } = router
+
+    if (!router.query) return
+
+    const { q } = query
+
+    if (q !== undefined && state.count === 0) {
+      searchQuery(q.toString(), 1)
+    } else if (window.location.href.match(/\?q=/) === null) {
+      searchQuery('', 1)
+    }
+  }, [router.query])
 
   return (
     <>

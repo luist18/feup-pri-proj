@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+
 import React, { ReactElement } from 'react'
 
 import { useSearch } from 'context/search'
@@ -6,13 +8,23 @@ import { Container } from './style'
 
 export default function SearchBar(): ReactElement {
   const { search, setSearch, searchQuery } = useSearch()
+  const router = useRouter()
 
   return (
     <Container>
       <form
         onSubmit={(event) => {
           event.preventDefault()
-          searchQuery(search)
+          searchQuery(search, 1)
+
+          router.push(
+            {
+              pathname: '/',
+              query: { q: search },
+            },
+            undefined,
+            { shallow: true }
+          )
         }}
       >
         <div className="relative">

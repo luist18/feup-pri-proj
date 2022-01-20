@@ -1,4 +1,7 @@
+import { useRouter } from 'next/router'
+
 import React, { ReactElement } from 'react'
+import ReactStringReplace from 'react-string-replace'
 
 import moment from 'moment'
 import 'moment/locale/pt'
@@ -9,6 +12,8 @@ import { Container } from './style'
 
 interface Props {
   document: QueryDocument
+  query: string
+  boldKeywords?: boolean
 }
 
 function stateColor(state: string | undefined): string {
@@ -24,9 +29,21 @@ function stateColor(state: string | undefined): string {
   }
 }
 
-export default function ArticleCard({ document }: Props): ReactElement {
+export default function ArticleCard({
+  document,
+  query,
+  boldKeywords,
+}: Props): ReactElement {
+  const router = useRouter()
+
   return (
-    <Container className="flex flex-col">
+    <Container
+      className="flex flex-col"
+      onClick={(event) => {
+        event.preventDefault()
+        router.push(`/artigo/${document.id}`)
+      }}
+    >
       <header className="flex items-center mb-2 flex-col sm:flex-row">
         <h2 className="text-xl font-semibold article-title">{`Artigo ${document.key}º (${document.title})`}</h2>
         <span
@@ -40,15 +57,18 @@ export default function ArticleCard({ document }: Props): ReactElement {
       </header>
       <main className="mb-2">
         <p className="article-text">
-          {document.text.replaceAll('\\n', '\n').trim()}
+          {boldKeywords
+            ? ReactStringReplace(
+                document.text.replaceAll('\\n', ' ').trim(),
+                new RegExp(`(${query.split(' ').join('|')})`, 'gi'),
+                (match) => <b>{match}</b>
+              )
+            : document.text.replaceAll('\\n', ' ').trim()}
         </p>
       </main>
       <footer className="flex flex-col">
         <span className="article-path text-sm">
-          {[
-            document.book,
-            ...document.path.map((element) => capitalize(element)),
-          ].join(' > ')}
+          {[document.book, ...document.path].join(' > ')}
         </span>
         <span className="article-date ml-auto my-2">
           {moment(new Date(document.date))
@@ -58,4 +78,8 @@ export default function ArticleCard({ document }: Props): ReactElement {
       </footer>
     </Container>
   )
+}
+
+ArticleCard.defaultProps = {
+  boldKeywords: false,
 }
