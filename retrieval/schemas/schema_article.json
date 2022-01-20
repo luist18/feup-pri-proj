@@ -140,43 +140,50 @@
 		{
 			"name": "state",
 			"type": "text_general",
-			"stored": true
+			"stored": true,
+      "multiValued": false
 		},
 		{
 			"name": "text",
 			"type": "text_type",
 			"stored": true,
-			"indexed": true
+			"indexed": true,
+      "multiValued": false
 		},
 		{
 			"name": "text_raw",
 			"type": "text_raw_type",
 			"stored": false,
-			"indexed": true
+			"indexed": true,
+      "multiValued": false
 		},
 		{
 			"name": "key",
 			"type": "key_type",
 			"stored": true,
 			"indexed": true,
-			"required": true
+			"required": true,
+      "multiValued": false
 		},
 		{
 			"name": "title",
 			"type": "text_type",
 			"stored": true,
-			"indexed": true
+			"indexed": true,
+      "multiValued": false
 		},
 		{
 			"name": "title_raw",
 			"type": "text_raw_type",
 			"stored": false,
-			"indexed": true
+			"indexed": true,
+      "multiValued": false
 		},
 		{
 			"name": "details",
 			"type": "text_general",
-			"stored": true
+			"stored": true,
+      "multiValued": false
 		},
 		{
 			"name": "date",
@@ -199,23 +206,27 @@
 			"type": "text_type",
 			"stored": true,
 			"indexed": true,
-			"required": true
+			"required": true,
+      "multiValued": false
 		},
 		{
 			"name": "book_url",
 			"type": "text_general",
 			"stored": true,
-			"required": true
+			"required": true,
+      "multiValued": false
 		},
 		{
 			"name": "president_name",
 			"type": "text_general",
-			"stored": true
+			"stored": true,
+      "multiValued": false
 		},
 		{
 			"name": "president_party",
 			"type": "text_general",
-			"stored": true
+			"stored": true,
+      "multiValued": false
 		}
 	],
 	"add-copy-field": [

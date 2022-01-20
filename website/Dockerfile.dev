@@ -1,0 +1,15 @@
+FROM node:17.3.0
+
+#Setup working directory
+RUN mkdir -p /usr/app
+WORKDIR /usr/app
+
+#Install dependencies
+COPY package.json yarn.lock ./
+RUN yarn install
+
+#Copy source files
+COPY . .
+
+#Running the app
+CMD ["yarn","dev"]

@@ -1,6 +1,6 @@
 @hostname = localhost
-@port = 5002
-@host = {{hostname}}:{{port}}
+@port = 80
+@host = {{hostname}}:{{port}}/solr
 @contentType = application/json
 @core = articles
 
