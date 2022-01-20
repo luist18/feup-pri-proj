@@ -7,18 +7,46 @@ import type {
   SolrResponse,
 } from 'types/solr'
 
+const queryMetrics = {
+  qf: {
+    book: 38.92432103822159,
+    key: 61.56994575348722,
+    path: 7.058582346255768,
+    text: 2.4731813053938483,
+    text_raw: 7.229762219930129,
+    title: 9.425539065132167,
+    title_raw: 0.39651608022263407,
+  },
+  pf: {
+    book: 22.488846194363205,
+    key: 0.9374478542140957,
+    path: 22.387246976224922,
+    text: 3.0407590739988253,
+    text_raw: 17.2687750652928,
+    title: 10.148322926042312,
+    title_raw: 25.311744954858113,
+  },
+  consolidado: 30.0,
+  tie: 0.2897121725263928,
+}
+
 export async function fetchArticles(query = '*:*', page = 1) {
-  const content = {
-    params: {
-      defType: 'edismax',
-      qf: 'title_raw^3 title^2 text_raw^1.5 text^1 path^0.5 book^0.25',
-      bq: 'state:Consolidado^4',
-      pf: 'title_raw^3 title^2 text_raw^1.5 text^1 path^0.5 book^0.25',
-      start: DOCUMENTS_PER_PAGE * (page - 1),
-    },
-    limit: DOCUMENTS_PER_PAGE,
-    query,
+  const params = {
+    defType: 'edismax',
+    qf: `book^${queryMetrics.qf.book} key^${queryMetrics.qf.key} path^${queryMetrics.qf.path} text^${queryMetrics.qf.text} text_raw^${queryMetrics.qf.text_raw} title^${queryMetrics.qf.title} title_raw^${queryMetrics.qf.title_raw}`,
+    pf: `book^${queryMetrics.pf.book} key^${queryMetrics.pf.key} path^${queryMetrics.pf.path} text^${queryMetrics.pf.text} text_raw^${queryMetrics.pf.text_raw} title^${queryMetrics.pf.title} title_raw^${queryMetrics.pf.title_raw}`,
+    bq: `state:Consolidado^${queryMetrics.consolidado}`,
+    tie: `${queryMetrics.tie}`,
+    q: query,
+    start: (page - 1) * DOCUMENTS_PER_PAGE,
   }
+
+  const content = {
+    params,
+    limit: DOCUMENTS_PER_PAGE,
+  }
+
+  console.log(content)
 
   const request = await axios.get(`http://solr:8983${solrURL}`, {
     headers: {
@@ -61,7 +89,7 @@ export async function fetchArticles(query = '*:*', page = 1) {
 
 export async function fetchRelated(document: QueryDocument) {
   const content = {
-    query: `+key:${document.key} +book_url:"${document.bookUrl}" -id:${
+    query: `+key:"art ${document.key}" +book_url:"${document.bookUrl}" -id:${
       document.id
     } +path:(${document.path.map((value) => `"+${value}"`).join(' ')})`,
     params: {

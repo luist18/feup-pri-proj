@@ -86,17 +86,22 @@ export default function Article({ document, related }: Props) {
             <span className="article-path">Não há artigos relacionados</span>
           ) : (
             <div className="flex flex-col text-sm article-text">
-              {related.map((doc) => (
-                <a
-                  key={doc.id}
-                  href={`/artigo/${doc.id}`}
-                  className="text-blue-700"
-                >{`Artigo ${doc.key}º (${doc.title}) [${capitalize(
-                  doc.state
-                )}] - ${moment(new Date(doc.date))
-                  .locale('PT')
-                  .format('D [de] MMMM [de] YYYY')}`}</a>
-              ))}
+              {related
+                .sort(
+                  (lhs, rhs) =>
+                    new Date(rhs.date).getTime() - new Date(lhs.date).getTime()
+                )
+                .map((doc) => (
+                  <a
+                    key={doc.id}
+                    href={`/artigo/${doc.id}`}
+                    className="text-blue-700"
+                  >{`Artigo ${doc.key}º (${doc.title}) [${capitalize(
+                    doc.state
+                  )}] - ${moment(new Date(doc.date))
+                    .locale('PT')
+                    .format('D [de] MMMM [de] YYYY')}`}</a>
+                ))}
             </div>
           )}
         </div>

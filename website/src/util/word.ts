@@ -27,3 +27,8 @@ export function startsWithPoint(line: string): boolean {
 export function startsWithSubPoint(line: string): boolean {
   return line.trim().match(/^\w\)\s/) !== null
 }
+
+// https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
+export function escapeRegExp(string: string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '') // $& means the whole matched string
+}

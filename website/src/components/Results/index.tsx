@@ -11,7 +11,7 @@ export default function Results(): ReactElement {
   const { searchQuery, search, state } = useSearch()
 
   const cards = state.results.map((document) => (
-    <ArticleCard key={document.id} document={document} />
+    <ArticleCard query={search} key={document.id} document={document} />
   ))
 
   if (state.loading) {

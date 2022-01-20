@@ -125,7 +125,7 @@
 			"queryAnalyzer": {
 				"tokenizer": {
 					"class": "solr.PatternTokenizerFactory",
-					"pattern": "(artigo|art) (\\d+)",
+					"pattern": "(?i)(artigo|art) (\\d+)",
 					"group": "2"
 				},
 				"filters": [

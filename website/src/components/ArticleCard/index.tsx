@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router'
 
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useMemo } from 'react'
 import ReactStringReplace from 'react-string-replace'
 
 import moment from 'moment'
 import 'moment/locale/pt'
 import { QueryDocument } from 'types/solr'
-import { capitalize } from 'util/word'
+import { capitalize, escapeRegExp } from 'util/word'
 
 import { Container } from './style'
 
@@ -36,6 +36,8 @@ export default function ArticleCard({
 }: Props): ReactElement {
   const router = useRouter()
 
+  const search = useMemo(() => query, [])
+
   return (
     <Container
       className="flex flex-col"
@@ -60,8 +62,18 @@ export default function ArticleCard({
           {boldKeywords
             ? ReactStringReplace(
                 document.text.replaceAll('\\n', ' ').trim(),
-                new RegExp(`(${query.split(' ').join('|')})`, 'gi'),
-                (match) => <b>{match}</b>
+                new RegExp(
+                  `(${escapeRegExp(search)
+                    .split(' ')
+                    .map((element) => `\\b${element}\\b`)
+                    .join('|')})`,
+                  'gi'
+                ),
+                (match, i) => (
+                  <span key={i} className="text-gray-800 font-semibold">
+                    {match}
+                  </span>
+                )
               )
             : document.text.replaceAll('\\n', ' ').trim()}
         </p>
@@ -81,5 +93,5 @@ export default function ArticleCard({
 }
 
 ArticleCard.defaultProps = {
-  boldKeywords: false,
+  boldKeywords: true,
 }
