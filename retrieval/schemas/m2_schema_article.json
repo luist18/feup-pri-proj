@@ -1,0 +1,229 @@
+{
+	"add-field-type": [
+		{
+			"name": "text_type",
+			"class": "solr.TextField",
+			"indexAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{
+						"class": "solr.PatternReplaceFilterFactory",
+						"pattern": "\\\\\\\\n\\w",
+						"replacement": " "
+					},
+					{
+						"class": "solr.ASCIIFoldingFilterFactory",
+						"preserveOriginal": false
+					},
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					},
+					{
+						"class": "solr.StopFilterFactory",
+						"words": "lang/stopwords_pt.txt",
+						"ignoreCase": "true"
+					},
+					{
+						"class": "solr.ClassicFilterFactory"
+					},
+					{
+						"class": "solr.EdgeNGramFilterFactory",
+						"preserveOriginal": "true",
+						"minGramSize": "4",
+						"maxGramSize": "46"
+					},
+					{
+						"class": "solr.PortugueseStemFilterFactory"
+					}
+				]
+			},
+			"queryAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{
+						"class": "solr.ASCIIFoldingFilterFactory",
+						"preserveOriginal": false
+					},
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					},
+					{
+						"class": "solr.StopFilterFactory",
+						"words": "lang/stopwords_pt.txt",
+						"ignoreCase": "true"
+					},
+					{
+						"class": "solr.ClassicFilterFactory"
+					},
+					{
+						"class": "solr.PortugueseStemFilterFactory"
+					}
+				]
+			}
+		},
+		{
+			"name": "text_raw_type",
+			"class": "solr.TextField",
+			"indexAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{
+						"class": "solr.PatternReplaceFilterFactory",
+						"pattern": "\\\\\\\\n\\w",
+						"replacement": " "
+					},
+					{
+						"class": "solr.ASCIIFoldingFilterFactory",
+						"preserveOriginal": true
+					},
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					},
+					{
+						"class": "solr.ClassicFilterFactory"
+					}
+				]
+			},
+			"queryAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{
+						"class": "solr.ASCIIFoldingFilterFactory",
+						"preserveOriginal": true
+					},
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					},
+					{
+						"class": "solr.ClassicFilterFactory"
+					}
+				]
+			}
+		},
+		{
+			"name": "key_type",
+			"class": "solr.TextField",
+			"indexAnalyzer": {
+				"tokenizer": {
+					"class": "solr.PathHierarchyTokenizerFactory",
+					"delimiter": "-"
+				},
+				"filters": [
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					}
+				]
+			},
+			"queryAnalyzer": {
+				"tokenizer": {
+					"class": "solr.ClassicTokenizerFactory"
+				},
+				"filters": [
+					{
+						"class": "solr.LowerCaseFilterFactory"
+					}
+				]
+			}
+		}
+	],
+	"add-field": [
+		{
+			"name": "state",
+			"type": "text_general",
+			"stored": true
+		},
+		{
+			"name": "text",
+			"type": "text_type",
+			"stored": true,
+			"indexed": true
+		},
+		{
+			"name": "text_raw",
+			"type": "text_raw_type",
+			"stored": false,
+			"indexed": true
+		},
+		{
+			"name": "key",
+			"type": "key_type",
+			"stored": true,
+			"indexed": true,
+			"required": true
+		},
+		{
+			"name": "title",
+			"type": "text_type",
+			"stored": true,
+			"indexed": true
+		},
+		{
+			"name": "title_raw",
+			"type": "text_raw_type",
+			"stored": false,
+			"indexed": true
+		},
+		{
+			"name": "details",
+			"type": "text_general",
+			"stored": true
+		},
+		{
+			"name": "date",
+			"type": "pdate",
+			"stored": true,
+			"indexed": true,
+			"required": true,
+			"docValues": true
+		},
+		{
+			"name": "path",
+			"type": "text_type",
+			"stored": true,
+			"indexed": true,
+			"required": true,
+			"multiValued": true
+		},
+		{
+			"name": "book",
+			"type": "text_type",
+			"stored": true,
+			"indexed": true,
+			"required": true
+		},
+		{
+			"name": "book_url",
+			"type": "text_general",
+			"stored": true,
+			"required": true
+		},
+		{
+			"name": "president_name",
+			"type": "text_general",
+			"stored": true
+		},
+		{
+			"name": "president_party",
+			"type": "text_general",
+			"stored": true
+		}
+	],
+	"add-copy-field": [
+		{
+			"source": "text",
+			"dest": ["text_raw"]
+		},
+		{
+			"source": "title",
+			"dest": ["title_raw"]
+		}
+	]
+}

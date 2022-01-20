@@ -19,11 +19,11 @@ elif [[ "$SCHEMA_TYPE" == "SCHEMA" ]]; then
     curl -X POST -H 'Content-type:application/json' \
         --data-binary @/schemas/schema_article.json \
         http://localhost:8983/solr/articles/schema
-elif [[ "$SCHEMA_TYPE" == "SCHEMA_WITH_WEIGHTS" ]]; then
-    echo "Running SOLR in SCHEMA mode"
+elif [[ "$SCHEMA_TYPE" == "OLD_SCHEMA" ]]; then
+    echo "Running SOLR in OLD_SCHEMA mode"
     # Schema definition via API
     curl -X POST -H 'Content-type:application/json' \
-        --data-binary @/schemas/schema_article_with_weights.json \
+        --data-binary @/schemas/m2_schema_article.json \
         http://localhost:8983/solr/articles/schema
 else
     echo "SCHEMA_TYPE is not valid"; exit 1
