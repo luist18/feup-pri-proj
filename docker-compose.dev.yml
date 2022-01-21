@@ -18,7 +18,7 @@ services:
     container_name: website_dev
     build:
       context: ./website
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     volumes:
       - ./website:/usr/app
       - /usr/app/node_modules
